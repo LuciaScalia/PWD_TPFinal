@@ -1,19 +1,19 @@
 <?php
 
-class AbmUsuario {
+class AbmCompraItem {
 
     //Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
     /**
      * Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
      * @param array $param
-     * @return Usuario
+     * @return CompraItem
      */
     private function cargarObjeto($param){
         $obj = null;
            
-        if(array_key_exists('idusuario',$param) && array_key_exists('usnombre',$param) && array_key_exists('uspass',$param) && array_key_exists('usmail',$param) && array_key_exists('usdeshabilitado',$param)){
-            $obj = new Usuario();
-            $obj->setear($param['idusuario'], $param['usnombre'], $param['uspass'], $param['usmail'], $param['usdeshabilitado']);
+        if(array_key_exists('idcompraitem',$param) && array_key_exists('idproducto',$param) && array_key_exists('idcompra',$param) && array_key_exists('cicantidad',$param)){
+            $obj = new CompraItem();
+            $obj->setear($param['idcompraitem'], $param['idproducto'], $param['idcompra'], $param['cicantidad']);
         }
         return $obj;
     }
@@ -21,14 +21,14 @@ class AbmUsuario {
     /**
      * Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto que son claves
      * @param array $param
-     * @return Usuario
+     * @return CompraItem
      */
     private function cargarObjetoConClave($param){
         $obj = null;
         
-        if(isset($param['idusuario']) ){
-            $obj = new Usuario();
-            $obj->setear($param['idusuario'], null, null, null, null);
+        if(isset($param['idcompraitem']) ){
+            $obj = new CompraEstado();
+            $obj->setear($param['idcompraitem'], null, null, null, null);
         }
         return $obj;
     }
@@ -40,7 +40,7 @@ class AbmUsuario {
      */
      private function seteadosCamposClaves($param){
         $resp = false;
-        if (isset($param['idusuario']))
+        if (isset($param['idcompraitem']))
             $resp = true;
         return $resp;
     }
@@ -51,10 +51,9 @@ class AbmUsuario {
      */
     public function alta($param){
         $resp = false;
-        $param['idusuario'] = null;
-        $param['usdeshabilitado'] = null;
-        $elObjUsuario = $this->cargarObjeto($param);
-        if ($elObjUsuario!=null and $elObjUsuario->insertar()){
+        $param['idcompraitem'] = null;
+        $elObjCompraItem = $this->cargarObjeto($param);
+        if ($elObjCompraItem!=null and $elObjCompraItem->insertar()){
             $resp = true;
         }
         return $resp;
@@ -68,8 +67,8 @@ class AbmUsuario {
     public function baja($param){
         $resp = false;
         if ($this->seteadosCamposClaves($param)){
-            $elObjtUsuario = $this->cargarObjetoConClave($param);
-            if ($elObjtUsuario!=null and $elObjtUsuario->eliminar()){
+            $elObjCompraItem = $this->cargarObjetoConClave($param);
+            if ($elObjCompraItem!=null and $elObjCompraItem->eliminar()){
                 $resp = true;
             }
         }
@@ -85,8 +84,8 @@ class AbmUsuario {
     public function modificacion($param){
         $resp = false;
         if ($this->seteadosCamposClaves($param)){
-            $elObjtUsuario = $this->cargarObjeto($param);
-            if($elObjtUsuario!=null && $elObjtUsuario->modificar()){
+            $elObjCompraItem = $this->cargarObjeto($param);
+            if($elObjCompraItem!=null && $elObjCompraItem->modificar()){
                 $resp = true;
             }
         }
@@ -101,18 +100,17 @@ class AbmUsuario {
     public function buscar($param){
         $where = " true ";
         if ($param!=NULL){
-            if  (isset($param['idusuario']))
-                $where.=" and idusuario =".$param['idusuario'];
-            if  (isset($param['usnombre']))
-                 $where.=" and usnombre ='".$param['usnombre']."'";
-             //if  (isset($param['uspass']))
-             //$where.=" and uspass ='".$param['uspass']."'";
-             if  (isset($param['usmail']))
-             $where.=" and usmail ='".$param['usmail']."'";
-             if  (isset($param['usdeshabilitado']))
-             $where.=" and usdeshabilitado ='".$param['usdeshabilitado']."'";
+            if  (isset($param['idcompraitem']))
+                $where.=" and idcompraitem =".$param['idcompraitem'];
+            if  (isset($param['idproducto']))
+                 $where.=" and idproducto ='".$param['idproducto']."'";
+            if  (isset($param['idcompra']))
+            $where.=" and idcompra ='".$param['idcompra']."'";
+            if  (isset($param['cicantidad']))
+            $where.=" and cicantidad ='".$param['cicantidad']."'";
+
         }
-        $arreglo = Usuario::listar($where);  
+        $arreglo = CompraItem::listar($where);  
         return $arreglo; 
     }
 }
