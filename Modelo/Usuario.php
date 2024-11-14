@@ -86,8 +86,8 @@ class Usuario extends BaseDatos{
 
     public function insertar(){
         $resp = false;
-        $sql="INSERT INTO usuario(`usnombre`, `uspass`, `usmail`, `usdeshabilitado`) 
-              VALUES('".$this->get_usnombre()."', '".$this->get_uspass()."', '".$this->get_usmail()."', '".$this->get_usdeshabilitado()."');";
+        $sql="INSERT INTO usuario(`usnombre`, `uspass`, `usmail`) 
+              VALUES('".$this->get_usnombre()."', '".$this->get_uspass()."', '".$this->get_usmail()."');";
         if ($this->Iniciar()) {
             if ($elid = $this->Ejecutar($sql)) {
                 $resp = true;
@@ -134,21 +134,22 @@ class Usuario extends BaseDatos{
 
     public static function listar($parametro=""){
         $arreglo = array();
+        $db = new BaseDatos();
         $sql="SELECT * FROM usuario";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new Usuario();
                     $obj->setear($row['idusuario'], $row['usnombre'], $row['uspass'], $row['usmail'], $row['usdeshabilitado']);
                     array_push($arreglo, $obj);
                 }
             }
         } else {
-            $this->set_mensajeoperacion("usuario->listar: ".$this->getError());
+            $this->set_mensajeoperacion("usuario->listar: ".$db->getError());
         }
         return $arreglo;
     }

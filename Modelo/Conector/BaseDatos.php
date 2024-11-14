@@ -127,7 +127,6 @@ class BaseDatos extends PDO {
     */
    
    private function EjecutarInsert($sql){
-    echo $sql;
        $resultado=parent::query($sql);
        if(!$resultado){
            $this->analizarDebug();

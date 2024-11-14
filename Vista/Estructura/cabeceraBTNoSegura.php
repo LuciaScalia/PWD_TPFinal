@@ -6,6 +6,8 @@ include_once("../../configuracion.php");
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../css/bootstrap/4.5.2/bootstrap.min.css" >
     <link rel="stylesheet" href="../css/bootstrap/4.5.2/bootstrapValidator.min.css" >
