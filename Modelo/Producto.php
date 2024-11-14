@@ -73,7 +73,7 @@ class Producto extends BaseDatos{
 
     public function insertar(){
         $resp = false;
-        $sql="INSERT INTO producto(idproducto,pronombre,prodetalle,procantstock) VALUES('".$this->get_idproducto()."','".$this->get_pronombre()."','".$this->get_prodetalle()."','".$this->get_procantstock().");";
+        $sql="INSERT INTO producto(idproducto,pronombre,prodetalle,procantstock) VALUES('".$this->get_idproducto()."','".$this->get_pronombre()."','".$this->get_prodetalle()."','".$this->get_procantstock()."');";
         if($this->Iniciar()){
             if($elid = $this->Ejecutar($sql)){
                 $this->set_idproducto($elid);
