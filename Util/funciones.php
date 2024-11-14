@@ -1,43 +1,42 @@
-<?php 
+<?php
+
 function data_submitted() {
-    
     $_AAux= array();
-    if (!empty($_REQUEST))
-        $_AAux =$_REQUEST;
-     if (count($_AAux)){
-            foreach ($_AAux as $indice => $valor) {
-                if ($valor=="")
-                    $_AAux[$indice] = 'null' ;
-            }
+    if (!empty($_POST))
+        $_AAux =$_POST;
+    else
+        if(!empty($_GET)) {
+            $_AAux =$_GET;
         }
-     return $_AAux;
-        
-}
-function verEstructura($e){
-    echo "<pre>";
-    print_r($e);
-    echo "</pre>"; 
+    if (count($_AAux)){
+        foreach ($_AAux as $indice => $valor) {
+            if ($valor=="")
+                $_AAux[$indice] = 'null'	;
+        }
+    }
+    return $_AAux;
+
 }
 
-spl_autoload_register(function ($class_name) {
-   
 
-//function __autoload($class_name){
-    //echo "class ".$class_name ;
+spl_autoload_register(function ($clase) {
+   // echo "Cargamos la clase  ".$clase."<br>" ;
     $directorys = array(
-        $_SESSION['ROOT'].'Modelo/',
-        $_SESSION['ROOT'].'Modelo/conector/',
-        $_SESSION['ROOT'].'Control/',
-      //  $GLOBALS['ROOT'].'util/class/',
+        $GLOBALS['ROOT'].'Modelo/',
+        $GLOBALS['ROOT'].'Control/',
+        $GLOBALS['ROOT'].'Modelo/Conector/',
+        $GLOBALS['ROOT'].'Util/',
     );
-    //print_object($directorys) ;
+    // print_r($directorys) ;
     foreach($directorys as $directory){
-        if(file_exists($directory.$class_name . '.php')){
+        if(file_exists($directory.$clase . '.php')){
             // echo "se incluyo".$directory.$class_name . '.php';
-            require_once($directory.$class_name . '.php');
+            require_once($directory.$clase . '.php');
             return;
         }
     }
-//}
+
+
 });
+
 ?>
