@@ -100,7 +100,7 @@ class BaseDatos extends PDO {
     
     public function Ejecutar($sql){
         $this->setError(null);
-       // echo "Hola ".$sql;
+        
         $this->setSQL($sql);
         if ( stristr($sql,"insert") ){ // se desea NSERT ? 
                 $resp =  $this->EjecutarInsert($sql);
@@ -127,6 +127,7 @@ class BaseDatos extends PDO {
     */
    
    private function EjecutarInsert($sql){
+    echo $sql;
        $resultado=parent::query($sql);
        if(!$resultado){
            $this->analizarDebug();

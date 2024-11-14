@@ -23,7 +23,7 @@ class Producto extends BaseDatos{
         $this->set_procantstock($procantstock);
     }
 
-    public function get_idproducto($idproducto){
+    public function get_idproducto(){
         return $this->idproducto;
     }
     public function set_idproducto($idproducto){
@@ -73,7 +73,7 @@ class Producto extends BaseDatos{
 
     public function insertar(){
         $resp = false;
-        $sql="INSERT INTO producto(idproducto,pronombre,prodetalle,procantstock) VALUES('".$this->get_idproducto()."','".$this->get_pronombre()."','".$this->get_prodetalle()."','".$this->get_procantstock().");";
+        $sql="INSERT INTO producto(`pronombre`, `prodetalle`, `procantstock`) VALUES ('".$this->get_pronombre()."','".$this->get_prodetalle()."','".$this->get_procantstock()."');";
         if($this->Iniciar()){
             if($elid = $this->Ejecutar($sql)){
                 $this->set_idproducto($elid);
@@ -120,21 +120,22 @@ class Producto extends BaseDatos{
 
     public static function listar($parametro=""){
         $arreglo = array();
+        $db = new BaseDatos();
         $sql="SELECT * FROM producto";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new Producto();
                     $obj->setear($row['idproducto'], $row['pronombre'], $row['prodetalle'], $row['procantstock']);
                     array_push($arreglo, $obj);
                 }
             }
         } else {
-            $this->set_mensajeoperacion("producto->listar: ".$this->getError());
+            $this->set_mensajeoperacion("producto->listar: ".$db->getError());
         }
         return $arreglo;
     }
