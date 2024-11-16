@@ -1,7 +1,18 @@
 <?php
 include_once '../Estructura/cabeceraBTNoSegura.php';
+$datos = data_submitted();
 ?>
-</head>
+<div class="row float-left">
+    <div class="col-md-12 float-left">
+      <?php 
+      if(isset($datos) && isset($datos['msg']) && $datos['msg']!=null) {
+        echo $datos['msg'];
+      }
+        
+     ?>
+    </div>
+</div>
+
 <div id="contenedor" class="container d-flex justify-content-center">
     <div class="col-md-5">
         <br>
@@ -9,7 +20,7 @@ include_once '../Estructura/cabeceraBTNoSegura.php';
             <h3>Nuevo usuario</h3>
         </div>
         <div>
-            <form name="formUsuario" id="formUsuario" method="post">
+            <form name="formUsuario" id="formUsuario" method="post" action="accion.php">
                 <label class="form-label text-muted" for="usnombre">Usuario</label>
                 <input type="text" name="usnombre" id="usnombre" class="form-control" required><br>
                 <!---->
@@ -20,34 +31,11 @@ include_once '../Estructura/cabeceraBTNoSegura.php';
                 <input type="password" name="uspass" id="uspass" class="form-control" required><br><br>
 
                 <div class="d-flex justify-content-center">
-                    <input type="button" id="aceptar" value="Aceptar">
+                <input type="button" class="btn btn-primary btn-block" value="Aceptar" onclick="formSubmit('formUsuario','uspass')">
                 </div>
                 <br>
             </form>
         </div>
     </div>
 </div>
-<script>
-$(document).ready(function() {
-        $('#aceptar').click(function() {
-            var uspass = encriptar();
-            var datosForm = $('#formUsuario').serialize();
-        $.ajax({
-            data: datosForm,
-            url: "accion.php",
-            type: "POST",
-            success: function(mensaje) {
-                $('#contenedor').html(mensaje);
-            },
-        });
-    })
-});
-function encriptar()
-{
-    var password =  document.getElementById("uspass").value;
-    //alert(password);
-    var passhash = CryptoJS.MD5(password).toString();
-    //alert(passhash);
-    document.getElementById("uspass").value = passhash;
-}
-</script>
+<script src="../js/encriptar.js"></script>
