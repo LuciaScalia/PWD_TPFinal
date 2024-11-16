@@ -9,6 +9,7 @@ if(isset($datos['usnombre']) && isset($datos['usmail']) && isset($datos['uspass'
     $respuesta = $ambUsuario->alta($datos);
     if ($respuesta) {
         $mensaje = "Usuario creado exitosamente";
+        echo("<script>location.href = '../Login/index.php?msg=".$mensaje."';</script>");
     }
 }
 /*$retorno['respuesta'] = $respuesta;

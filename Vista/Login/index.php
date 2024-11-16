@@ -27,25 +27,10 @@ $datos = data_submitted();
     <input type="password" class="form-control" name="uspass" id="uspass" placeholder="Contraseña" required>
   </div>
   <br>
-  <input type="button" class="btn btn-primary btn-block" value="Validar" onclick="formSubmit()">
+  <input type="button" class="btn btn-primary btn-block" value="Validar" onclick="formSubmit('login','uspass')">
 </form>
 
-<script>
-
-function formSubmit()
-{
-    var password =  document.getElementById("uspass").value;
-    //alert(password);
-    var passhash = CryptoJS.MD5(password).toString();
-    //alert(passhash);
-    document.getElementById("uspass").value = passhash;
-
-    setTimeout(function(){ 
-        document.getElementById("login").submit();
-
-	}, 500);
-}
-</script>
+<script src="../js/encriptar.js"></script>
 
 <?php
 // footer

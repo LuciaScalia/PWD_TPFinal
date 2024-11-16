@@ -99,14 +99,15 @@ class UsuarioRol extends BaseDatos {
 
     public static function listar($parametro=""){
         $arreglo = array();
+        $db=new BaseDatos();
         $sql="SELECT * FROM usuariorol";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new UsuarioRol();
                     $obj->get_objusuario()->set_idusuario($row['idusuario']);
                     $obj->get_objrol()->set_idrol($row['idrol']);

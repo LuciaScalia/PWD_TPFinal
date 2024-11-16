@@ -1,5 +1,6 @@
 <?php
 include_once("../../configuracion.php");
+$datos=data_submitted();
 ?>
 <html lang="es">
 <head>
@@ -15,18 +16,10 @@ include_once("../../configuracion.php");
 
     <title> </title>    
 </head>
-<?php
-$objTrans = new Session();
-$resp = $objTrans->validar();
-if($resp) {
-   //echo("<script>location.href = '../home/index.php';</script>");
-} else {
-    $mensaje ="Error, vuelva a intentarlo";
-    echo("<script>location.href = '../Login/index.php?msg=".$mensaje."';</script>");
-}
 
 
-?>
+
+
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Cabecera segura</a>
@@ -54,6 +47,14 @@ if($resp) {
                             Salir
                         </a>
                     </li>
+                    
+                    <?php 
+                 //   print_r($datos);
+                    if(isset($datos) && isset($datos['li']) && $datos['li']!=null) {
+                        echo $datos['li'];
+                      }
+                    ?>
+
                 </ul>
 
                 
