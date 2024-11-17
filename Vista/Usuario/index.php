@@ -39,3 +39,6 @@ $datos = data_submitted();
     </div>
 </div>
 <script src="../js/encriptar.js"></script>
+<?php
+include_once("../Estructura/pie.php");
+?>
