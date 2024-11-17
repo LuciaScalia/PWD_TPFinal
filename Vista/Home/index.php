@@ -3,6 +3,13 @@ $titulo = "Inicio";
 include_once("../Estructura/cabeceraBTNoSegura.php");
 ?>
 
+<<<<<<< HEAD
+?>
+
+<?php
+include_once("../Estructura/pie.php");
+?>
+
 <div id="contenedor">
     <div id="productos"></div>
     <div id="carrito"><input type="button" value="Carrito"><span id="cantProd"></span></div>
