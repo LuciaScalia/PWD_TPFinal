@@ -15,7 +15,7 @@ class Session{
         $param['usdeshabilitado'] = null;
         
         $usuario = $abmUsuario->buscar($param);
-        if (!empty($usuario) && $uspass) {
+        if (!empty($usuario) && $uspass==$usuario[0]->get_uspass()) {
             $usuario = $usuario[0];
             $_SESSION['idusuario'] = $usuario->get_idusuario();
             $resp = true;

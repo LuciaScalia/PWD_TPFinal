@@ -16,7 +16,16 @@ $datos=data_submitted();
 
     <title> </title>    
 </head>
-
+<?php
+$obj = new Session();
+$resp = $obj->validar();
+if($resp) {
+   //echo("<script>location.href = '../home/index.php';</script>");
+} else {
+    $mensaje ="Error, vuelva a intentarlo";
+    echo("<script>location.href = '../Login/index.php?msg=".$mensaje."';</script>");
+}
+?>
 
 
 
