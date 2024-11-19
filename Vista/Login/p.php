@@ -1,5 +1,5 @@
 <?php
-include_once '../Estructura/cabeceraBTNoSegura.php';
+include_once '../../Estructura/cabeceraBTNoSegura.php';
 ?>
 
 <!-- Example single danger button -->
@@ -17,5 +17,5 @@ include_once '../Estructura/cabeceraBTNoSegura.php';
 </div>
 
 <?php
-include_once("../Estructura/pie.php");
+include_once("../../Estructura/pie.php");
 ?>

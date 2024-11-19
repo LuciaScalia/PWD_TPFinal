@@ -1,13 +1,13 @@
 <?php
 $titulo = "Inicio";
-include_once("../Estructura/cabeceraBTNoSegura.php");
+include_once("../../Estructura/cabeceraBTNoSegura.php");
 ?>
 
 <<<<<<< HEAD
 ?>
 
 <?php
-include_once("../Estructura/pie.php");
+include_once("../../Estructura/pie.php");
 ?>
 
 <div id="contenedor">

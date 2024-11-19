@@ -1,7 +1,7 @@
 <?php
 $link = "";
 $titulo = "Login";
-include_once '../Estructura/cabeceraBTNoSegura.php';
+include_once '../../Estructura/cabeceraBTNoSegura.php';
 $datos = data_submitted();
 ?>
 <div class="row float-left">
@@ -33,5 +33,5 @@ $datos = data_submitted();
 <script src="../js/encriptar.js"></script>
 
 <?php
-include_once("../Estructura/pie.php");
+include_once("../../Estructura/pie.php");
 ?>
