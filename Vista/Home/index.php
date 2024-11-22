@@ -1,12 +1,18 @@
 <?php
 $titulo = "Inicio";
-include_once("../../Estructura/cabeceraBTNoSegura.php");
+include_once("../Estructura/cabeceraBTNoSegura.php");
 ?>
 
 <<<<<<< HEAD
 ?>
 
+<<<<<<< HEAD
 
+=======
+<?php
+include_once("../Estructura/pie.php");
+?>
+>>>>>>> 01ff08e2316d167063743f5a0c7fed57c16f0d4e
 
 <div id="contenedor">
     <div id="productos"></div>

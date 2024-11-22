@@ -1,17 +1,19 @@
 <?php
+
 include_once '../../../configuracion.php';
 
 $datos = data_submitted();
-
 $respuesta = false;
-if(isset($datos['usnombre']) && isset($datos['usmail']) && isset($datos['uspass'])) {
+if(isset($datos['idusuario'])) {
     $ambUsuario = new AbmUsuario();
-    $respuesta = $ambUsuario->alta($datos);
+    $session = new Session();
+    $respuesta= $ambUsuario->modificacion($datos);
+    $respuesta = $session->cerrar();
     if (!$respuesta) {
         $mensaje = "La acci&oacute;n no pudo concretarse";
-        //echo("<script>location.href = '../Login/index.php?msg=".$mensaje."';</script>");
     }
 }
+
 $retorno['respuesta'] = $respuesta;
 if (isset($mensaje)){
     $retorno['errorMsg'] = $mensaje;

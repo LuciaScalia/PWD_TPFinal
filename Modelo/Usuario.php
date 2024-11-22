@@ -22,7 +22,7 @@ class Usuario extends BaseDatos{
         $this->set_usnombre($usnombre);
         $this->set_uspass($uspass);
         $this->set_usmail($usmail);
-        if($usdeshabilitado = '0000-00-00 00:00:00')
+        if($usdeshabilitado == '0000-00-00 00:00:00')
              $usdeshabilitado = "null";
         $this->set_usdeshabilitado($usdeshabilitado);
     }
@@ -119,7 +119,7 @@ class Usuario extends BaseDatos{
 
     public function eliminar(){
         $resp = false;
-        $sql="DELETE FROM usuario WHERE `idusuario` = '".$this->get_idusuario()."'";
+        $sql="DELETE FROM usuario WHERE idusuario=".$this->get_idusuario();
         if ($this->Iniciar()) {
             if ($this->Ejecutar($sql)) {
                 return true;

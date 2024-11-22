@@ -101,22 +101,23 @@ class Rol extends BaseDatos {
     }
 
     public static function listar($parametro=""){
+        $db = new BaseDatos();
         $arreglo = array();
         $sql="SELECT * FROM rol";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new Rol();
                     $obj->setear($row['idrol'], $row['rodescripcion']);
                     array_push($arreglo, $obj);
                 }
             }
         } else {
-            $this->set_mensajeoperacion("rol->listar: ".$this->getError());
+            $this->set_mensajeoperacion("rol->listar: ".$db->getError());
         }
         return $arreglo;
     }

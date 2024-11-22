@@ -54,4 +54,3 @@ include_once("../../configuracion.php");
         </div>
     </div>
 </div>
-            

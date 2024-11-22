@@ -27,7 +27,7 @@ $datos = data_submitted();
     <input type="password" class="form-control" name="uspass" id="uspass" placeholder="Contraseña" required>
   </div>
   <br>
-  <input type="button" class="btn btn-primary btn-block" value="Validar" onclick="formSubmit('login','uspass')">
+  <input type="submit" class="btn btn-primary btn-block" value="Validar" onclick="formSubmit()">
 </form>
 
 <script src="../js/encriptar.js"></script>
