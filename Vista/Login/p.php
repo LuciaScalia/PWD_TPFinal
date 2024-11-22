@@ -1,5 +1,6 @@
 <?php
 include_once '../../Estructura/cabeceraBTNoSegura.php';
+
 ?>
 
 <!-- Example single danger button -->

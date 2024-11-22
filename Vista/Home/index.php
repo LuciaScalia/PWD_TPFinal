@@ -6,9 +6,7 @@ include_once("../../Estructura/cabeceraBTNoSegura.php");
 <<<<<<< HEAD
 ?>
 
-<?php
-include_once("../../Estructura/pie.php");
-?>
+
 
 <div id="contenedor">
     <div id="productos"></div>
@@ -35,4 +33,6 @@ $(document).ready(function() {
     });    
 });
 </script>
-            
+<?php
+include_once("../../Estructura/pie.php");
+?>
