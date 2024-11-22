@@ -1,5 +1,5 @@
 <?php
-include_once '../Estructura/cabeceraBTNoSegura.php';
+include_once '../../Estructura/cabeceraBTNoSegura.php';
 $datos = data_submitted();
 ?>
 
@@ -53,5 +53,5 @@ $datos = data_submitted();
 });
 </script>
 <?php
-include_once '../Estructura/footer.php';
+include_once("../../Estructura/pie.php");
 ?>
