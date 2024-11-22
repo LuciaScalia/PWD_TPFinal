@@ -8,6 +8,7 @@ class UsuarioRol extends BaseDatos {
         parent::__construct();
         $this->objusuario=new Usuario();
         $this->objrol=new Rol();
+        $this->usdeshabilitado = "";
     }   
 
     public function setear ($objusuario,$objrol){
@@ -27,6 +28,13 @@ class UsuarioRol extends BaseDatos {
     }
     public function set_objrol($objrol){
         $this->objrol=$objrol;
+    }
+
+    public function get_usroldeshabilitado() {
+        return $this->usdeshabilitado;
+    }
+    public function set_usroldeshabilitado($usdeshabilitado) {
+        $this->usdeshabilitado = $usdeshabilitado;
     }
 
     public function get_mensajeoperacion(){
@@ -79,12 +87,24 @@ class UsuarioRol extends BaseDatos {
 
     public function modificar(){
         $resp = false;
+        $sql = "UPDATE usuariorol SET `idusuario` = '".$this->get_objusuario()->get_idusuario()."', `idrol` = '".$this->get_objrol()->get_idrol()."'
+        WHERE `idusuario` = '".$this->get_objusuario()->get_idusuario()."' AND idrol = ".$this->get_objrol()->get_idrol();
+        if ($this->Iniciar()) {
+            if ($this->Ejecutar($sql)) {
+                $resp = true;
+            } else {
+                $this->set_mensajeoperacion("usuariorol->modificar: ".$this->getError());
+            }
+        } else {
+            $this->set_mensajeoperacion("usuariorol->modificar: ".$this->getError());
+        }
         return $resp;
     }
 
     public function eliminar(){
         $resp = false;
         $sql="DELETE FROM usuariorol WHERE `idusuario` = '".$this->get_objusuario()->get_idusuario()."' AND idrol = ".$this->get_objrol()->get_idrol();
+        echo $sql;
         if ($this->Iniciar()) {
             if ($this->Ejecutar($sql)) {
                 return true;
@@ -120,8 +140,6 @@ class UsuarioRol extends BaseDatos {
         }
         return $arreglo;
     }
-    
-    
 }
 
 ?>

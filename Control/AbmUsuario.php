@@ -43,7 +43,7 @@ class AbmUsuario {
         if (isset($param['idusuario']))
             $resp = true;
         return $resp;
-    }
+    }/********************************************************** ACÁ*/
     
     /**
      * 
@@ -84,7 +84,7 @@ class AbmUsuario {
      */
     public function modificacion($param){
         $resp = false;
-        if ($this->seteadosCamposClaves($param)){
+        if ($this->seteadosCamposClaves($param)){/********************************************************** ACÁ*/
             $elObjtUsuario = $this->cargarObjeto($param);
             if($elObjtUsuario!=null && $elObjtUsuario->modificar()){
                 $resp = true;
@@ -105,12 +105,12 @@ class AbmUsuario {
                 $where.=" and idusuario =".$param['idusuario'];
             if  (isset($param['usnombre']))
                  $where.=" and usnombre ='".$param['usnombre']."'";
-             //if  (isset($param['uspass']))
-             //$where.=" and uspass ='".$param['uspass']."'";
-             if  (isset($param['usmail']))
-             $where.=" and usmail ='".$param['usmail']."'";
-             if  (isset($param['usdeshabilitado']))
-             $where.=" and usdeshabilitado ='".$param['usdeshabilitado']."'";
+            if (isset($param['uspass']))
+               $where.=" and uspass ='".$param['uspass']."'";
+            if  (isset($param['usmail']))
+               $where.=" and usmail ='".$param['usmail']."'";
+            if  (isset($param['usdeshabilitado']))
+                $where.=" and usdeshabilitado ='".$param['usdeshabilitado']."'";
         }
         $arreglo = Usuario::listar($where);  
         return $arreglo; 
