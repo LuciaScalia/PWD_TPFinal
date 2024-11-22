@@ -1,6 +1,6 @@
 <?php
 $titulo = "Inicio";
-include_once("../Estructura/cabeceraBT.php");
+include_once("../../Estructura/cabeceraBT.php");
 
 $session = new Session();
 $ambMenuRol = new AbmMenuRol();
@@ -80,5 +80,5 @@ foreach($menurol as $unmenu) {
     });
 </script>
 <?php
-include_once("../Estructura/pie.php")
+include_once("../../Estructura/pie.php")
 ?>
