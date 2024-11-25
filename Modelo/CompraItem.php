@@ -16,10 +16,10 @@ class CompraItem extends BaseDatos{
     }
 
     public function setear($idcompraitem, $idproducto, $idcompra, $cicantidad) {
-        $this->set_idcompraestado($idcompraitem);
-        $this->set_idcompra($idproducto);
-        $this->set_idcompraestadotipo($idcompra);
-        $this->set_cefechaini($cicantidad);
+        $this->set_idcompraitem($idcompraitem);
+        $this->set_idproducto($idproducto);
+        $this->set_idcompra($idcompra);
+        $this->set_cicantidad($cicantidad);
     }
 
     public function get_idcompraitem() {

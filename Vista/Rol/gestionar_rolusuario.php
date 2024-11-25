@@ -96,5 +96,6 @@ foreach ($usuarios as $unUsuario) {
 
 <?php
 include_once("../../Estructura/pie.php")
+include_once("../../Estructura/pie.php")
 ?>
                

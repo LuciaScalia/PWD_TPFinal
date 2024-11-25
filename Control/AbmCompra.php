@@ -110,5 +110,79 @@ class AbmCompra {
         $arreglo = Compra::listar($where);  
         return $arreglo; 
     }
+
+    public function fechaActual(){
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $fechaActual = date('Y-m-d H:i:s');
+        return $fechaActual;
+    }
+
+    public function ultimoIdCompra(){
+        $compras=$this->buscar("");
+
+    }
+    
+    public function IniciarCompra($productos){
+        $sesion=new Session();
+        $mensaje="No se pudo iniciar la compra!";
+        if($sesion->validar()){
+           $usuario=$sesion->getUsuario();
+           $idusuario=$usuario->get_idusuario();
+            $fechaActual = $this->fechaActual();
+            $param=['idusuario'=>$idusuario,'cofecha'=> $fechaActual];
+            $compra=$this->alta($param);
+            if($compra){
+                $compraitem=new AbmCompraItem();
+                $compras=$this->buscar("");
+                $ultimaCompra=end($compras);
+                $idCompra=$ultimaCompra->get_idcompra();
+                $objProducto=new AbmProducto();
+                foreach($productos as $producto){
+                    $idProducto= (int)$producto['id'];
+                    $cantidadProduc=(int)$producto['cantidad'];
+                    $param2=['idproducto'=>$idProducto,'idcompra'=> $idCompra, 'cicantidad'=> $cantidadProduc];
+                    $registroproduc=$compraitem->alta($param2);
+                    /*
+                    $producEncontrado=$objProducto->buscar(['idproducto'=>$idProducto]);
+                    $cantstock=$producEncontrado[0]->get_procantstock();
+                    $setCantStock=$producEncontrado[0]->set_procantstock($cantstock-$cantidadProduc);
+                    */
+                     if (!$registroproduc) { $registroproducExitoso = false; error_log("Error al registrar el producto ID: $idProducto en la compra ID: $idCompra cantidad: $cantidadProduc"); break;}
+                }
+
+                if($registroproduc){
+
+                    $compraestado=new AbmCompraEstado();
+                    $param3=['idcompra'=>$idCompra,'idcompraestadotipo'=>1,'cefechaini'=>$fechaActual,'cefechafin'=>null];
+                    $ingresada=$compraestado->alta($param3);
+                    if($ingresada){
+                        $mensaje="Compra confirmada!";
+                    }else{
+                        $mensaje="No se pudo confirmar compra";
+                    }
+                }else{
+                    $mensaje="No se pudo registrar los productos";
+                }
+            }else{
+                $mensaje="No se pudo iniciar la compra";
+            }
+        }
+        return [ 'mensaje'=> $mensaje ];
+    }
+  /*
+    public function AceptarCompra($idusuario,$idCompraEstado){
+        $sesion=new Session();
+        $mensaje="No se pudo aceptar la compra";
+        if($sesion->validar()){
+            $compraestado=new AbmCompraEstado();
+            $compra=$compraestado->buscar(['idcompraestado'=>$idCompraEstado]);
+            if(!empty($compra)){
+                $fechaActual=$this->fechaActual();
+                $idCompra=$compra->set_cefechafin($fechaActual);
+                $compra->set_idcompraestadotipo(2);
+            }
+        }
+        return $mensaje;
+    }*/
 }
 ?>
