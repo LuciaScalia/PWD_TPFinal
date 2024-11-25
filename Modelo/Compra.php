@@ -111,22 +111,23 @@ class Compra extends BaseDatos{
     }
 
     public static function listar($parametro=""){
+        $db = new BaseDatos();
         $arreglo = array();
         $sql="SELECT * FROM compra";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new Compra();
                     $obj->setear($row['idcompra'], $row['cofecha'], $row['idusuario']);
                     array_push($arreglo, $obj);
                 }
             }
         } else {
-            $this->set_mensajeoperacion("compra->listar: ".$this->getError());
+            $this->set_mensajeoperacion("compra->listar: ".$db->getError());
         }
         return $arreglo;
     }

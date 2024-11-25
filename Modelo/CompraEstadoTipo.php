@@ -111,22 +111,23 @@ class CompraEstadoTipo extends BaseDatos{
     }
 
     public static function listar($parametro=""){
+        $db = new BaseDatos();
         $arreglo = array();
         $sql="SELECT * FROM compraestadotipo";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new CompraEstado();
-                    $this->setear($row['idcompraestadotipo'], $row['cetdescripcion'], $row['cetdetalle']);
+                    $obj->setear($row['idcompraestadotipo'], $row['cetdescripcion'], $row['cetdetalle']);
                     array_push($arreglo, $obj);       
                 }
             }
         } else {
-            $this->set_mensajeoperacion("compraestadotipo->listar: ".$this->getError());
+            $this->set_mensajeoperacion("compraestadotipo->listar: ".$db->getError());
         }
         return $arreglo;
     }

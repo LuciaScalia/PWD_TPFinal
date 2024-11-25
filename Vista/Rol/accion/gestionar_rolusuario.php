@@ -2,6 +2,7 @@
 include_once '../../../configuracion.php';
 
 $datos = data_submitted();
+//var_dump($datos);
 $respuesta = false;
 if(isset($datos['idrol']) && isset($datos['idusuario'])) {
     $abmUsuarioRol = new AbmUsuarioRol();

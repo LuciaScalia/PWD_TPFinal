@@ -1,14 +1,12 @@
 <?php
 
 include_once '../../../configuracion.php';
-
 $datos = data_submitted();
+print_r($datos);
 $respuesta = false;
 if(isset($datos['idusuario'])) {
     $ambUsuario = new AbmUsuario();
-    $session = new Session();
-    $respuesta= $ambUsuario->modificacion($datos);
-    $respuesta = $session->cerrar();
+    $respuesta = $ambUsuario->modificacion($datos);
     if (!$respuesta) {
         $mensaje = "La acci&oacute;n no pudo concretarse";
     }
