@@ -22,6 +22,7 @@ $datos=data_submitted();
 $obj = new Session();
 $resp = $obj->validar();
 if($resp) {
+    
    //echo("<script>location.href = '../home/index.php';</script>");
 } else {
     $mensaje ="Error, vuelva a intentarlo";
@@ -35,13 +36,22 @@ if($resp) {
 <header>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Cabecera segura</a>
-        <div id="carrito" class="ml-auto">
-            <input type="button" value="Carrito" id="toggleCarrito">
-            <span id="cantProd"></span>
-        </div>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
+        <?php 
+        $rol=new AbmUsuarioRol();
+        $resp=$rol->permisoRol();
+        
+        if($resp){
+
+            echo '<div id="carrito" class="ml-auto">
+                <input type="button" value="Carrito" id="toggleCarrito">
+                <span id="cantProd"></span>
+                </div> 
+                <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>';  
+            }
+        ?> 
+        
     </nav>
 </header>
 <div class="container-fluid">

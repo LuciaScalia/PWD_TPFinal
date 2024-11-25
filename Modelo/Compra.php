@@ -80,11 +80,12 @@ class Compra extends BaseDatos{
     }
 
     public function modificar(){
+        $db=new BaseDatos();
         $resp = false;
         $sql = "UPDATE compra SET `cofecha` = '".$this->get_cofecha()."', `idusuario` = '".$this->get_idusuario()."'
         WHERE `idcompra` = '".$this->get_idcompra()."'";
-        if ($this->Iniciar()) {
-            if ($this->Ejecutar($sql)) {
+        if ($db->Iniciar()) {
+            if ($db->Ejecutar($sql)) {
                 $resp = true;
             } else {
                 $this->set_mensajeoperacion("compra->modificar: ".$this->getError());
@@ -96,10 +97,11 @@ class Compra extends BaseDatos{
     }
 
     public function eliminar(){
+        $db=new BaseDatos();
         $resp = false;
         $sql="DELETE FROM compra WHERE `idcompra` = '".$this->get_idcompra()."'";
-        if ($this->Iniciar()) {
-            if ($this->Ejecutar($sql)) {
+        if ($db->Iniciar()) {
+            if ($db->Ejecutar($sql)) {
                 return true;
             } else {
                 $this->set_mensajeoperacion("compra->eliminar: ".$this->getError());
@@ -111,15 +113,16 @@ class Compra extends BaseDatos{
     }
 
     public static function listar($parametro=""){
+        $db=new BaseDatos();
         $arreglo = array();
         $sql="SELECT * FROM compra";
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new Compra();
                     $obj->setear($row['idcompra'], $row['cofecha'], $row['idusuario']);
                     array_push($arreglo, $obj);

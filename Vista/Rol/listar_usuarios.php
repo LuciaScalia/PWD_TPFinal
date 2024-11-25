@@ -1,6 +1,6 @@
 <?php
 $titulo = "Lista de usuarios";
-include_once("../Estructura/cabeceraBT.php");
+include_once("../../Estructura/cabeceraBT.php");
 
 $abmUsuario = new AbmUsuario();
 $usuarios = $abmUsuario->buscar(null);
@@ -37,5 +37,5 @@ foreach ($usuarios as $unUsuario) {
 </div>
 
 <?php
-include_once("../Estructura/pie.php")
+include_once("../../Estructura/pie.php")
 ?>
