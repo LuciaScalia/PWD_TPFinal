@@ -1,8 +1,11 @@
 <?php
+
+require __DIR__ . '/../Util/vendor/autoload.php'; 
+// Verificación de la clase PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-require __DIR__ . '/../Util/vendor/autoload.php';
+
 class AbmCompra {
 
     //Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
@@ -216,5 +219,37 @@ class AbmCompra {
         }
         return $mensaje;
     }
+
+    public function actualizarCompra($datosCompra){
+        $idcompra = $datosCompra['idcompra']; 
+        $cefechafin = $datosCompra['cefechafin']; 
+        $idcompraestadotipo = $datosCompra['idcompraestadotipo']; 
+        $accion= $datosCompra['accion'];
+        $mensaje="no se pudo cambiar";
+        switch($accion){
+            case 'confirmar':
+                $compraestado=new AbmCompraEstado();
+                $compra=$compraestado->buscar(['idcompra'=>$idcompra]);  
+                //print_r($compra);
+               $paramfecha=['idcompra'=>$idcompra,
+               'idcompraestadotipo'=>1,
+               'cefechaini'=>$compra[0]->get_cefechaini(),
+               'cefechafin'=>$this->fechaActual()];
+              //print_r($paramfecha);
+               $mod=$compraestado->modificacion($paramfecha);
+               if($mod){
+                    $mensaje="se modifico";
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cofechaini'=>$this->fechaActual()];
+                    $compra->alta($param);
+                }
+               
+               
+                break;
+            
+        }
+
+        return [ 'mensaje'=> $mensaje ];
+    }
+
 }
 ?>

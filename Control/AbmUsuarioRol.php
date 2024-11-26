@@ -162,4 +162,16 @@ class AbmUsuarioRol {
         }
         return $respuesta;
     }
+    public function permisoRol(){
+        $sesion= new Session();
+        $resp=false;  
+        if($sesion->validar()){
+            $rol=$sesion->getRol();
+            $id=$rol->get_idrol();
+            if($id==1){
+                $resp=true;
+            }
+        }
+        return $resp;
+    }
 }

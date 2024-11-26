@@ -121,7 +121,7 @@ class CompraEstadoTipo extends BaseDatos{
         if($res>-1){
             if($res>0){
                 while ($row = $db->Registro()){
-                    $obj= new CompraEstado();
+                    $obj= new CompraEstadoTipo();
                     $obj->setear($row['idcompraestadotipo'], $row['cetdescripcion'], $row['cetdetalle']);
                     array_push($arreglo, $obj);       
                 }
