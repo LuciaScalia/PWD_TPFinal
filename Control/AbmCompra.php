@@ -205,23 +205,9 @@ class AbmCompra {
         return [ 'mensaje'=> $mensaje ];
     }
   
-    public function AceptarCompra($compra){
-        $sesion=new Session();
-        $mensaje="No se pudo aceptar la compra";
-        if($sesion->validar()){
-            $compraestado=new AbmCompraEstado();
-            $compra=$compraestado->buscar(['idcompraestado'=>$idCompraEstado]);
-            if(!empty($compra)){
-                $fechaActual=$this->fechaActual();
-                $idCompra=$compra->set_cefechafin($fechaActual);
-                $compra->set_idcompraestadotipo(2);
-            }
-        }
-        return $mensaje;
-    }
 
     public function actualizarCompra($datosCompra){
-        $idcompra = $datosCompra['idcompra']; 
+        $idcompra = (int)$datosCompra['idcompra']; 
         $cefechafin = $datosCompra['cefechafin']; 
         $idcompraestadotipo = $datosCompra['idcompraestadotipo']; 
         $accion= $datosCompra['accion'];
@@ -230,17 +216,20 @@ class AbmCompra {
             case 'confirmar':
                 $compraestado=new AbmCompraEstado();
                 $compra=$compraestado->buscar(['idcompra'=>$idcompra]);  
-                //print_r($compra);
-               $paramfecha=['idcompra'=>$idcompra,
+                var_dump($compra);
+               $paramfecha=['idcompraestado'=>$idcompraestadotipo,
+               'idcompra'=>$idcompra,
                'idcompraestadotipo'=>1,
                'cefechaini'=>$compra[0]->get_cefechaini(),
                'cefechafin'=>$this->fechaActual()];
-              //print_r($paramfecha);
+              //var_dump($paramfecha);
                $mod=$compraestado->modificacion($paramfecha);
                if($mod){
                     $mensaje="se modifico";
-                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cofechaini'=>$this->fechaActual()];
-                    $compra->alta($param);
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
+                    $compraestado->alta($param);
+                }else{
+                    $mensaje="NOPOOO";
                 }
                
                

@@ -102,7 +102,6 @@ class CompraEstado extends BaseDatos{
         $db=new BaseDatos();
         $sql = "UPDATE compraestado SET `idcompra` = '".$this->get_idcompra()."', `idcompraestadotipo` = '".$this->get_idcompraestadotipo()."', `cefechaini` = '".$this->get_cefechaini()."', `cefechafin` = '".$this->get_cefechafin()."'
         WHERE `idcompra` = '".$this->get_idcompra()."'";
-        echo $sql;
         if ($db->Iniciar()) {
             if ($db->Ejecutar($sql)) {
                 $resp = true;

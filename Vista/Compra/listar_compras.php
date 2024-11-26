@@ -1,5 +1,4 @@
 <?php
-include_once '../../configuracion.php';
 $titulo = "Listar compras";
 include_once("../../Estructura/CabeceraBT.php");   
 
@@ -68,20 +67,24 @@ $(document).on('click', '.confirmar-btn, .cancelar-btn, .enviar-btn', function()
     var idcompraestadotipo = $(this).data('idcompraestadotipo');
     var accion = $(this).val().toLowerCase(); 
 
-    var data = {
-        idcompra: idcompra,
-        cefechafin: cefechafin,
-        idcompraestadotipo: idcompraestadotipo,
-        accion: accion
-    };
-    console.log(data);
-    $.ajax({
-        url: 'accion/actualizarCompras.php',
+
+    $.ajax({ 
+        data: {
+            idcompra: idcompra,
+            cefechafin: cefechafin,
+            idcompraestadotipo: idcompraestadotipo,
+            accion: accion
+        },
         type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
+        dataType: 'json',  
+        url: 'accion/actualizarCompras.php',
         success: function(response){
-            console.log("Respuesta del servidor:", response);
+            if(respuesta.respuesta) {
+                    
+                    $('#mensaje').html("La acción se ejecutó correctamente");
+                } else {
+                    $('#mensaje').html("La acción no pudo concretarse");
+                }
         }
     });
 });
