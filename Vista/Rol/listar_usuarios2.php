@@ -7,22 +7,21 @@ $usuarios = $abmUsuario->buscar(null);
 $todosLosUs = "";
 foreach ($usuarios as $unUsuario) {
     $usdeshabilitado = $unUsuario->get_usdeshabilitado();
-    $estado =  $usdeshabilitado == null ? "Deshabilitar" : "Habilitar";
-    $inputValue = date('Y-m-d H:i:s');
-    if ($estado == "Habilitar") {
-        $inputValue = null;
-    } 
+    $accionDisp =  $usdeshabilitado == null || $usdeshabilitado == "0000-00-00 00:00:00"? "Deshabilitar" : "Habilitar";
+    $estado = $accionDisp == "Deshabilitar" ? "Habilitado" : $usdeshabilitado;
+    $valorEstadoCambio = $estado == "Habilitado" ? date('Y-m-d H:i:s') : null;
+
     $todosLosUs .= "
     <tr data-id='".$unUsuario->get_idusuario()."' 
         data-usnombre='".$unUsuario->get_usnombre()."' 
         data-usmail='".$unUsuario->get_usmail()."' 
         data-uspass='".$unUsuario->get_uspass()."' 
-        data-usdeshabilitado='".$usdeshabilitado."'>
+        data-valorestadocambio='".$valorEstadoCambio."'>
         <td>".$unUsuario->get_idusuario()."</td>
         <td>".$unUsuario->get_usnombre()."</td>
         <td>".$unUsuario->get_usmail()."</td>
-        <td class='estado'>".$usdeshabilitado."</td>
-        <td><input class='btn btn-primary botonEstado' type='button' data-usdeshabilitado='".$inputValue."' value='".$estado."'></td>
+        <td>".$estado."</td>
+        <td><input class='btn btn-primary botonEstado' type='button' value='".$accionDisp."'></td>
     </tr>";
 }
 ?>
@@ -36,6 +35,7 @@ foreach ($usuarios as $unUsuario) {
                 <th>Nombre</th>
                 <th>Mail</th>
                 <th>Estado</th>
+                <!--<th>Rol</th>-->
                 <th></th>
             </tr>
         </thead>
@@ -45,21 +45,19 @@ foreach ($usuarios as $unUsuario) {
     </table>
 </div>
 <script>
+    $(document).ready(function() {
     $('.botonEstado').click(function() {
-    // Get the parent <tr> of the clicked button
+    //tr más cercano al botón clickeado
     var $tr = $(this).closest('tr');
     
-    // Retrieve all the data attributes from the <tr>
+    //Todos los datos del tr
     var idusuario = $tr.data('id');
     var usnombre = $tr.data('usnombre');
     var usmail = $tr.data('usmail');
     var uspass = $tr.data('uspass');
-    var usdeshabilitado = $(this).data('usdeshabilitado');
-    
-    // Determine the action based on the button value
-    var accion = $(this).val();
-    
-    // Create a data object to send via AJAX
+    var usdeshabilitado = $tr.data('valorestadocambio');
+    alert(usdeshabilitado);
+
     var datos = {
         idusuario: idusuario,
         usnombre: usnombre,
@@ -67,8 +65,6 @@ foreach ($usuarios as $unUsuario) {
         uspass: uspass,
         usdeshabilitado: usdeshabilitado
     };
-    
-    // Perform the AJAX request
     $.ajax({
         data: datos,
         type: 'POST',
@@ -86,8 +82,9 @@ foreach ($usuarios as $unUsuario) {
         }
     });
 });
+});
 </script>
 
 <?php
-include_once("../../Estructura/pie.php")
+include_once("../../Estructura/pie.php");
 ?>

@@ -104,7 +104,6 @@ class UsuarioRol extends BaseDatos {
     public function eliminar(){
         $resp = false;
         $sql="DELETE FROM usuariorol WHERE `idusuario` = '".$this->get_objusuario()->get_idusuario()."' AND idrol = ".$this->get_objrol()->get_idrol();
-        echo $sql;
         if ($this->Iniciar()) {
             if ($this->Ejecutar($sql)) {
                 return true;

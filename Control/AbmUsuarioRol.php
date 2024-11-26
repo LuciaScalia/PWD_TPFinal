@@ -141,7 +141,6 @@ class AbmUsuarioRol {
     }*/
 
     public function gestionarRol($datos) {
-        //$datos = idusuario e idrol a cambiar
         $ambUsuarioRol = new abmUsuarioRol();
         $ambUsuario = new AbmUsuario();
         $ambRol = new AbmRol();
@@ -150,16 +149,29 @@ class AbmUsuarioRol {
         $us = $ambUsuario->buscar(['idusuario'=>$datos['idusuario']]);
         $usrol = $ambUsuarioRol->buscar(['idusuario'=>$datos['idusuario']]);
         //print_r($usrol);
-        $nuevorol = $ambRol->buscar(['idrol'=>$datos['idrol']]); //rol que llega en $datos
-        $param = [$us, $nuevorol];//sirve para alta
-        if (empty($usrol)) {
+        $nuevorol = $ambRol->buscar(['idrol'=>$datos['datarol']]); //rol que llega en $datos
+        $param = [$us, $nuevorol];//sirve para alta cuando no tiene rol
+        if ($datos['idrol'] == "sinrol") {
             $respuesta = $ambUsuarioRol->alta($param);
         } else {
-            $usrol = [$us, $nuevorol];
+            $borrarRol = $ambRol->buscar(['idrol'=>$datos['idrol']]);
+            $usrol = [$us, $borrarRol];
             $respuesta = $ambUsuarioRol->baja($usrol);
-            print_r($usrol);
             $respuesta = $ambUsuarioRol->alta($param);
         }
         return $respuesta;
+    }
+
+    public function permisoRol(){
+        $sesion= new Session();
+        $resp=false;  
+        if($sesion->validar()){
+            $rol=$sesion->getRol();
+            $id=$rol->get_idrol();
+            if($id==1){
+                $resp=true;
+            }
+        }
+        return $resp;
     }
 }

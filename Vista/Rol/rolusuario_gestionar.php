@@ -1,9 +1,10 @@
 <?php
-$titulo = "Gestionar rol de usuario";
+$titulo = "Gestionar roles";
 include_once("../../Estructura/CabeceraBT.php");
 
 $abmUsuario = new AbmUsuario();
-$abmUsuarioRol = new abmUsuarioRol();
+$abmUsuarioRol = new AbmUsuarioRol();
+$abmRol = new AbmRol(); // no mostrar administradores
 $usuarios = $abmUsuario->buscar(null);
 
 $usActivos = "";
@@ -30,27 +31,26 @@ foreach ($usuarios as $unUsuario) {
             <input type='button' class='btn btn-primary administrador' data-rol='2' value='Admin' " . ($admin ? "disabled" : "") . ">";
         }
         $usActivos .=
-        "<tr 
-        data-id=".$unUsuario->get_idusuario()."
-        data-idrol=".$idRol.">
+        "<tr data-id=".$unUsuario->get_idusuario()." data-idrol=".$idRol.">
             <td>".$unUsuario->get_idusuario()."</td>
             <td>".$unUsuario->get_usnombre()."</td>
             <td>".$unUsuario->get_usmail()."</td>
-            <td colspan='3'>".$rolesBoton."</td>
+            <td>".$rolesBoton."</td>
         </tr>";
     }
 }
-?>
+?> 
 
-<div id="mensaje"></div>
 <div>
+    <b>Usuarios habilitados</b>
+    <div id="mensaje"></div>
     <table class="table table-striped table-sm">
         <thead class="thead-dark">
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Mail</th>
-                <th></th>
+                <th>Gestionar</th>
             </tr>
         </thead>
         <?php
@@ -61,16 +61,17 @@ foreach ($usuarios as $unUsuario) {
 
 <script>
     $(document).ready(function() {
-    // Event listener para cuando clickeo un botón
     $('.btn-primary').on('click', function() {
+        var $botonClickeado = $(this);
+        var $tr = $botonClickeado.closest('tr');
+        var $botonDeshabilitado = $tr.find('.btn-primary:disabled'); //Guarda el botón deshabilitado de la fila
+
         var dataRol = $(this).data('rol'); //data-rol del botón clickeado
         var $tr = $(this).closest('tr');
         var idUsuario = $tr.data('id');
         var idRol = $tr.data('idrol');
-
-        /*console.log('Data Rol:', dataRol);
-        console.log('ID Usuario:', idUsuario);
-        console.log('ID Rol:', idRol);*/
+        //Deshabilita el botón clickeada
+        $botonClickeado.prop('disabled', true);
 
         $.ajax({
             data: {
@@ -81,15 +82,22 @@ foreach ($usuarios as $unUsuario) {
             type: 'POST',
             dataType: 'json',
             url: 'accion/gestionar_rolusuario.php',
-            success: function(response) {
-                // Handle the response from the server
-                $('#mensaje').html(response);
+            success: function(respuesta) {
+                    if(respuesta.respuesta) {
+                        //Habilita el botón
+                    if ($botonDeshabilitado.length) {
+                        $botonDeshabilitado.prop('disabled', false);
+                    }
+                    $('#mensaje').html("La acción se ejecutó correctamente");
+                } else {
+                    $('#mensaje').html("La acción no pudo concretarse");
+                }
             },
-            error: function(xhr, status, error) {
-                // Handle any errors
-                console.error('AJAX Error:', status, error);
-            }
         });
     });
 });
 </script>
+
+<?php
+include_once("../../Estructura/pie.php");
+?>

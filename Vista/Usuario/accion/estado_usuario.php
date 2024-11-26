@@ -10,6 +10,7 @@ if(isset($datos['idusuario'])) {
     if (!$respuesta) {
         $mensaje = "La acci&oacute;n no pudo concretarse";
     }
+    //var_dump($respuesta);
 }
 
 $retorno['respuesta'] = $respuesta;
