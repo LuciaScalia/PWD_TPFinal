@@ -161,7 +161,6 @@ class AbmUsuarioRol {
         }
         return $respuesta;
     }
-
     public function permisoRol(){
         $sesion= new Session();
         $resp=false;  
