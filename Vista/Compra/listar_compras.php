@@ -104,7 +104,7 @@ foreach ($compras as $unaCompra) {
         ?>
     </table>
 </div>
-
+<?php include_once("../../Estructura/pie.php");   ?>
 <script>
 $(document).on('click', '.confirmar-btn, .cancelar-btn, .enviar-btn', function() {
     var botonClickeado = $(this);

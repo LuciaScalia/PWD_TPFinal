@@ -227,6 +227,31 @@ class AbmCompra {
                if($mensaje){
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
                     $mensaje=$compraestado->alta($param);
+                    if($mensaje){
+                        $correo="Su compra fue confirmada!";
+                        $this->EnviarCorreo($correo);
+                        $abmCompraItem=new AbmCompraItem();
+                        $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
+                       // print_r($compraItem);
+                       foreach($compraItem as $item){
+                            $idproducto= $item->get_idproducto();
+                            $cicantidad= $item->get_cicantidad();
+                            
+                            $abmProducto=new AbmProducto();
+                            $producto=$abmProducto->buscar(['idproducto'=>$idproducto]);
+                            //print_r($producto);
+                            if(!empty($producto)){
+                                $cant=$producto[0]->get_procantstock();
+                                $param=['idproducto'=>$idproducto,
+                                'pronombre'=>$producto[0]->get_pronombre(),
+                                'prodetalle'=>$producto[0]->get_prodetalle(),
+                                'procantstock'=>$cant-$cicantidad,
+                                'proprecio'=>$producto[0]->get_proprecio()];
+                                $mensaje=$abmProducto->modificacion($param);
+                            }
+                        }
+                    }
+
                 }
                 break;
             case 'enviar':
@@ -244,6 +269,11 @@ class AbmCompra {
                if($mensaje){
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>3,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
                     $mensaje=$compraestado->alta($param);
+                    if($mensaje){
+                        $correo="Su compra fue enviada!";
+                        $this->EnviarCorreo($correo);
+                       
+                    }
                 }
 
                 /*$param=['idcompraestado'=>$idcompraestado,
@@ -270,6 +300,30 @@ class AbmCompra {
                    if($mensaje){
                         $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>5,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
                         $mensaje=$compraestado->alta($param);
+                        if($mensaje){
+                            $correo="Su compra fue cancelada!";
+                            $this->EnviarCorreo($correo);
+                            $abmCompraItem=new AbmCompraItem();
+                            $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
+                           // print_r($compraItem);
+                           foreach($compraItem as $item){
+                                $idproducto= $item->get_idproducto();
+                                $cicantidad= $item->get_cicantidad();
+                                
+                                $abmProducto=new AbmProducto();
+                                $producto=$abmProducto->buscar(['idproducto'=>$idproducto]);
+                                //print_r($producto);
+                                if(!empty($producto)){
+                                    $cant=$producto[0]->get_procantstock();
+                                    $param=['idproducto'=>$idproducto,
+                                    'pronombre'=>$producto[0]->get_pronombre(),
+                                    'prodetalle'=>$producto[0]->get_prodetalle(),
+                                    'procantstock'=>$cant+$cicantidad,
+                                    'proprecio'=>$producto[0]->get_proprecio()];
+                                    $mensaje=$abmProducto->modificacion($param);
+                                }
+                            }
+                        }
                     }
                     break;
         }

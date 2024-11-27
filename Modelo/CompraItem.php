@@ -122,15 +122,16 @@ class CompraItem extends BaseDatos{
     public static function listar($parametro=""){
         $arreglo = array();
         $sql="SELECT * FROM compraitem";
+        $db=new BaseDatos();
         if ($parametro!="") {
            $sql.=' WHERE '.$parametro;
         }
-        $res = $this->Ejecutar($sql);
+        $res = $db->Ejecutar($sql);
         if($res>-1){
             if($res>0){
-                while ($row = $this->Registro()){
+                while ($row = $db->Registro()){
                     $obj= new CompraItem();
-                    $this->setear($row['idcompraitem'], $row['idproducto'], $row['idcompra'], $row['cicantidad']);
+                    $obj->setear($row['idcompraitem'], $row['idproducto'], $row['idcompra'], $row['cicantidad']);
                     array_push($arreglo, $obj);
                 }
             }
