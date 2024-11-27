@@ -210,31 +210,68 @@ class AbmCompra {
         $idcompra = (int)$datosCompra['idcompra']; 
         $cefechafin = $datosCompra['cefechafin']; 
         $idcompraestadotipo = $datosCompra['idcompraestadotipo']; 
+        $idcompraestado= $datosCompra['idcompraestado'];
         $accion= $datosCompra['accion'];
-        $mensaje="no se pudo cambiar";
+        $mensaje=false;
+        $compraestado=new AbmCompraEstado();
+        $compra=$compraestado->buscar(['idcompra'=>$idcompra]);  
         switch($accion){
             case 'confirmar':
-                $compraestado=new AbmCompraEstado();
-                $compra=$compraestado->buscar(['idcompra'=>$idcompra]);  
-                var_dump($compra);
-               $paramfecha=['idcompraestado'=>$idcompraestadotipo,
+                //var_dump($compra);
+               $param=['idcompraestado'=>$idcompraestado,
                'idcompra'=>$idcompra,
-               'idcompraestadotipo'=>1,
+               'idcompraestadotipo'=>$idcompraestadotipo,
+               'cefechaini'=>$compra[0]->get_cefechaini(),
+               'cefechafin'=>$this->fechaActual()];
+               $mensaje=$compraestado->modificacion($param);
+               if($mensaje){
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
+                    $mensaje=$compraestado->alta($param);
+                }
+                break;
+            case 'enviar':
+                $compraestados = $compraestado->buscar(['idcompra'=>(int)$datosCompra['idcompra']]);
+                $cantcompraestados = count($compraestados);
+                $compraestados = $compraestados[$cantcompraestados - 1];
+
+                $param=['idcompraestado'=>$compraestados->get_idcompraestado(), //esto hay q cambiar
+               'idcompra'=>$idcompra,
+               'idcompraestadotipo'=>$idcompraestadotipo,
                'cefechaini'=>$compra[0]->get_cefechaini(),
                'cefechafin'=>$this->fechaActual()];
               //var_dump($paramfecha);
-               $mod=$compraestado->modificacion($paramfecha);
-               if($mod){
-                    $mensaje="se modifico";
-                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
-                    $compraestado->alta($param);
-                }else{
-                    $mensaje="NOPOOO";
+               $mensaje=$compraestado->modificacion($param);
+               if($mensaje){
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>3,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
+                    $mensaje=$compraestado->alta($param);
                 }
-               
+
+                /*$param=['idcompraestado'=>$idcompraestado,
+               'idcompra'=>$idcompra,
+               'idcompraestadotipo'=>$idcompraestadotipo,
+               'cefechaini'=>$compra[0]->get_cefechaini(),
+               'cefechafin'=>$this->fechaActual()];
+              //var_dump($paramfecha);
+               $mensaje=$compraestado->modificacion($param);
+               if($mensaje){
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>3,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
+                    $mensaje=$compraestado->alta($param);
+                }*/
                
                 break;
-            
+
+            case 'cancelar':
+                $param=['idcompraestado'=>$idcompraestado,
+                   'idcompra'=>$idcompra,
+                   'idcompraestadotipo'=>$idcompraestadotipo,
+                   'cefechaini'=>$compra[0]->get_cefechaini(),
+                   'cefechafin'=>$this->fechaActual()];
+                   $mensaje=$compraestado->modificacion($param);
+                   if($mensaje){
+                        $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>5,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
+                        $mensaje=$compraestado->alta($param);
+                    }
+                    break;
         }
 
         return [ 'mensaje'=> $mensaje ];
