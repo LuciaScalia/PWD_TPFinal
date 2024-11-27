@@ -128,11 +128,7 @@ $(document).on('click', '.confirmar-btn, .cancelar-btn, .enviar-btn', function()
 
             $('#mensaje').html("La acci&oacute;n '" + accion + "' se ejecut&oacute; correctamente");
         },
-        error: function(xhr) {
-            // Handle errors here
-            var errorMsg = xhr.responseJSON ? xhr.responseJSON.errorMsg : "Ocurrió un error desconocido";
-            $('#mensaje').html(errorMsg);
-        }
+    
     });
 });
 </script>
