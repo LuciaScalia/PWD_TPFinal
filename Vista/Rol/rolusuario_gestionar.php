@@ -26,8 +26,8 @@ foreach ($usuarios as $unUsuario) {
             $admin = ($rolNombre == "administrador") ? true : false;
 
             $rolesBoton = "
-            <input type='button' class='btn btn-primary cliente' data-rol='1' value='Cliente' " . ($cliente ? "disabled" : "") . ">
-            <input type='button' class='btn btn-primary deposito' data-rol='3' value='Dep&oacute;sito' " . ($deposito ? "disabled" : "") . ">
+            <input type='button' class='btn btn-primary cliente' data-rol='1' value='Cliente' " . ($cliente ? "disabled" : "") . " " . ($admin ? "disabled" : "") . ">
+            <input type='button' class='btn btn-primary deposito' data-rol='3' value='Dep&oacute;sito' " . ($deposito ? "disabled" : "") . " " . ($admin ? "disabled" : "") . ">
             <input type='button' class='btn btn-primary administrador' data-rol='2' value='Admin' " . ($admin ? "disabled" : "") . ">";
         }
         $usActivos .=

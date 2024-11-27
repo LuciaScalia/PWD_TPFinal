@@ -8,54 +8,76 @@ $abmCompraEstado = new AbmCompraEstado();
 $abmCompraEstadoTipo = new AbmCompraEstadoTipo();
 
 $usSession = $session->getUsuario();
-$compras = $abmCompra->buscar(null);
+$rolSession = $session->getRol();
+$rolSession = $rolSession->get_idrol();
 
 $mostrarCompras = "";
+
+if ($rolSession == 1) {
+    $compras = $abmCompra->buscar(['idusuario'=>$usSession->get_idusuario()]);
+} else {
+    $compras = $abmCompra->buscar(null);
+}
 
 foreach ($compras as $unaCompra) {
     $idCompraEstado = $abmCompraEstado->buscar(['idcompra'=>$unaCompra->get_idcompra()]);
     $cantFilas = count($idCompraEstado);
-    $idCompraEstado = $cantFilas > 1 ? $idCompraEstado[$cantFilas - 1] : $idCompraEstado[0];    
-   
-     if ($idCompraEstado->get_cefechafin() == null || $idCompraEstado->get_cefechafin() == "0000-00-00 00:00:00") {
-        $idCompraEstadoTipo = $idCompraEstado->get_idcompraestadotipo();
+    $idCompraEstado = $cantFilas > 1 ? $idCompraEstado[$cantFilas - 1] : $idCompraEstado[0];
+    $fechaFinCompraEstado = $idCompraEstado->get_cefechafin();
+    $idCompraEstadoTipo = $idCompraEstado->get_idcompraestadotipo();
+
+     if ($idCompraEstado->get_cefechafin() == null || $idCompraEstado->get_cefechafin() == "0000-00-00 00:00:00" || $idCompraEstadoTipo == 4 || $idCompraEstadoTipo == 5) {
+        
         $estadoTipo = $abmCompraEstadoTipo->buscar(['idcompraestadotipo'=>$idCompraEstadoTipo]);
         $estado=$estadoTipo[0]->get_idcompraestadotipo();
         $estadoTipo = $estadoTipo[0]->get_cetdescripcion();
-        //$confirmada = $estadoTipo == "Confirmada" ? true : false;
-        //$enviada = $estadoTipo == "Enviada" ? true : false;
 
         $mostrarCompras .= "
      <tr>
         <td>".$unaCompra->get_idcompra()."</td>
         <td>".$unaCompra->get_cofecha()."</td>
+        <td>".$fechaFinCompraEstado."</td>
         <td>".$unaCompra->get_idusuario()."</td>
         <td data-estadotipo=".$estadoTipo.">".$estadoTipo."</td>";
         
         $botones = "";
-        if($estado == 1) {
-            $botones = " 
-                <input type='button' value='Confirmar' class='btn btn-success confirmar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-                <input type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-            ";
-        } elseif ($estado == 2) {
-            $botones = "
-                <input type='button' value='Enviar' class='btn btn-success enviar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-                <input type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-            ";
-        } elseif ($estado == 3) {
-            $botones = "
-                <input type='button' value='Recibida' class='btn btn-success recibida-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-                <input disabled type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
 
-            ";
-        } elseif ($estado == 4) {
-            $botones = "
-                <input disabled type='button' value='Recibida' class='btn btn-success recibida-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+        if($rolSession == 1) {
+            if ($estado == 3 || $estado == 4 || $estado == 5) {
+                $botones = " 
                 <input disabled type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-
-            ";
-        } 
+                "; 
+            } else {
+                $botones = " 
+                <input type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                "; 
+            }
+        } else {
+            if($estado == 1) {
+                $botones = " 
+                    <input type='button' value='Confirmar' class='btn btn-success confirmar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                    <input type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                ";
+            } elseif ($estado == 2) {
+                $botones = "
+                    <input type='button' value='Enviar' class='btn btn-success enviar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                    <input type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                ";
+            } elseif ($estado == 3) {
+                $botones = "
+                    <input type='button' value='Recibida' class='btn btn-success recibida-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                    <input disabled type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+    
+                ";
+            } elseif ($estado == 4) {
+                $botones = "
+                    <input disabled type='button' value='Recibida' class='btn btn-success recibida-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+                    <input disabled type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
+    
+                ";
+            } 
+        }
+        
         
         $mostrarCompras .= "<td>$botones</td>";
         $mostrarCompras .= "</tr>";
@@ -70,6 +92,7 @@ foreach ($compras as $unaCompra) {
             <tr>
                 <th>ID compra</th>
                 <th>Fecha inicio</th>
+                <th>Fecha fin</th>
                 <th>ID usuario</th>
                 <th>Estado</th>
                 <th></th>
@@ -85,8 +108,7 @@ foreach ($compras as $unaCompra) {
 <script>
 $(document).on('click', '.confirmar-btn, .cancelar-btn, .enviar-btn', function() {
     var botonClickeado = $(this);
-    var $estadotipoTd = botonClickeado.closest('tr').find('td[data-estadotipo]'); // Correctly define $estadotipoTd
-    console.log($estadotipoTd); // Log the element to the console for debugging
+    var $estadotipoTd = botonClickeado.closest('tr').find('td[data-estadotipo]'); // tr de la fila del bot+on clickeado
     var idcompra = botonClickeado.data('idcompra');
     var cefechafin = botonClickeado.data('cefechafin');
     var idcompraestadotipo = botonClickeado.data('idcompraestadotipo');
@@ -128,11 +150,6 @@ $(document).on('click', '.confirmar-btn, .cancelar-btn, .enviar-btn', function()
 
             $('#mensaje').html("La acci&oacute;n '" + accion + "' se ejecut&oacute; correctamente");
         },
-        error: function(xhr) {
-            // Handle errors here
-            var errorMsg = xhr.responseJSON ? xhr.responseJSON.errorMsg : "Ocurrió un error desconocido";
-            $('#mensaje').html(errorMsg);
-        }
     });
 });
 </script>
