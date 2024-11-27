@@ -67,6 +67,10 @@ foreach($menurol as $unmenu) {
   </div>
 </div>
 <script>
+  $('#Listarcompras').click(function() {
+        window.location.href = '../Compra/listar_compras.php';
+    });
+
     $('#Listarusuarios').click(function() {
         window.location.href = '../Rol/listar_usuarios.php';
     });
