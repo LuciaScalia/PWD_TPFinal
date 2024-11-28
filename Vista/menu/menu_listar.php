@@ -2,7 +2,6 @@
 $titulo = "Inicio";
 include_once("../../Estructura/cabeceraBT.php");
 
-
 $session = new Session();
 $ambMenuRol = new AbmMenuRol();
 $abmMenu = new AbmMenu();
@@ -38,8 +37,9 @@ $menuOperacion .= "</tr>";
     </table>
     <div name="formEditarUs" id="formEditarUs" class="col-md-7" style="display: none;">
       <br>
+      <div name="mensaje" id="mensaje"></div>
       <div>
-          <div id="mensaje"></div>
+          
           <h3>Editar usuario</h3><br>
       </div>
       <div>
@@ -61,57 +61,62 @@ $menuOperacion .= "</tr>";
 </div>
 </div>
 
-<script src="../js/encriptar.js"></script>
 <script>
     $('#Editarusuario').click(function() {
-        $('#formEditarUs').toggle();//muestra y esconde el div
+        $('#formEditarUs').toggle(); // muestra y esconde el div
+        $('#mensaje').html("");
         $('#aceptar').click(function(evento) {
-          evento.preventDefault();
-          var idusuario = $('#idusuario').html();
-          var usdeshabilitado = null;
+            evento.preventDefault();
+            var idusuario = $('#idusuario').html();
+            var usdeshabilitado = null;
 
-          var usnombreactual = $('#usnombrenuevo').data('usnombre');
-          var usmailactual = $('#usmailnuevo').data('usmail');
-          var uspassactual = $('#uspassnueva').data('uspass');
+            var usnombreactual = $('#usnombrenuevo').data('usnombre');
+            var usmailactual = $('#usmailnuevo').data('usmail');
+            var uspassactual = $('#uspassnueva').data('uspass');
 
-          var usnombrenuevo = $('#usnombrenuevo').val();
-          var usmailnuevo = $('#usmailnuevo').val();
-          var uspassnueva = $('#uspassnueva').val();
+            var usnombrenuevo = $('#usnombrenuevo').val();
+            var usmailnuevo = $('#usmailnuevo').val();
+            var uspassnueva = $('#uspassnueva').val();
 
-          var usnombre = usnombrenuevo != "" ? usnombrenuevo : usnombreactual;
-          var usmail = usmailnuevo != "" ? usmailnuevo : usmailactual;
-          var uspass;
-          if (uspassnueva != "") {
-            uspass = uspassnueva;
-            var uspass =  document.getElementById("uspassnueva").value;
-            var uspass = CryptoJS.MD5(uspass).toString()
-            document.getElementById("uspassnueva").value = uspass;
-          } else {
-            uspass = uspassactual;
-          }
+            var usnombre = usnombrenuevo != "" ? usnombrenuevo : usnombreactual;
+            var usmail = usmailnuevo != "" ? usmailnuevo : usmailactual;
+            var uspass;
+            if (uspassnueva != "") {
+                uspass = uspassnueva;
+                uspass = CryptoJS.MD5(uspass).toString();
+                document.getElementById("uspassnueva").value = uspass;
+            } else {
+                uspass = uspassactual;
+            }
 
-          var datos = {
+            var datos = {
                 idusuario: idusuario,
                 usnombre: usnombre,
                 usmail: usmail,
                 uspass: uspass,
                 usdeshabilitado: usdeshabilitado
-              };
+            };
 
-          alert(JSON.stringify(datos));
-          $.ajax({
-            data: datos,
-            type: 'POST',
-            dataType: 'json',
-            url: '../Usuario/accion/editar_usuario.php',
-            success: function(data) {
-                if (data.respuesta) {
-                  $('#mensale').html("El usuario se actualizó con éxito");
-                } else {
-                    $('#menu').html('<div><p>' + data.errorMsg + '</p></div>');
-                }
-              },
-            });
+            if (usnombrenuevo != "" || usmailnuevo != "" || uspassnueva != "") {
+                $.ajax({
+                    data: datos,
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '../Usuario/accion/editar_usuario.php',
+                    success: function(data) {
+                        $('#usnombre').html(usnombre);
+                        $('#usmail').html(usmail);
+                        $('#mensaje').html("El usuario se editó correctamente");
+
+                        // Limpia los inputs
+                        $('#usnombrenuevo').val('');
+                        $('#usmailnuevo').val('');
+                        $('#uspassnueva').val('');
+                    },
+                });
+            } else {
+                $('#mensaje').html("No se ingresaron datos para editar");
+            }
         });
     });
 

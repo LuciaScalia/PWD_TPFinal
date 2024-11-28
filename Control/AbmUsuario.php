@@ -150,5 +150,28 @@ class AbmUsuario {
         }
         return $resp;
     }
+
+    public function estadoUsuarioAdmin($param) {
+        $resp = false;
+        $ambUsuarioRol = new AbmUsuarioRol();
+        $abmRol = new AbmRol();
+        if($param['usdeshabilitado'] == null || $param['usdeshabilitado'] == "0000-00-00 00:00:00") {
+            $param['usdeshabilitado'] = $this->fechaActual();
+        } else {
+            $usuario = $this->buscar(['idusuario'=>$param['idusuario']]);
+            if ($usuario[0]->get_usdeshabilitado() == null || $usuario[0]->get_usdeshabilitado() == "0000-00-00 00:00:00") {
+                //borra la fila de usuariorol
+                $usuarioRol = $ambUsuarioRol->buscar(['idusuario'=>$param['idusuario']]);
+                $usuarioRol = $abmRol->buscar(['idrol'=>$usuarioRol[0]->get_objrol()->get_idrol()]);
+                if(!empty($usuarioRol)) {
+                    $usuario = $this->buscar(['idusuario'=>$param['idusuario']]);
+                    $baja = [$usuario, $usuarioRol];
+                    $resp = $ambUsuarioRol->baja($baja);
+                }
+            }
+        }
+        $resp = $this->modificacion($param);
+        return $resp;
+    }
 }
 ?>

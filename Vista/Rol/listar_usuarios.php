@@ -7,11 +7,8 @@ $usuarios = $abmUsuario->buscar(null);
 $todosLosUs = "";
 foreach ($usuarios as $unUsuario) {
     $usdeshabilitado = $unUsuario->get_usdeshabilitado();
-    $estado =  $usdeshabilitado == null ? "Deshabilitar" : "Habilitar";
-    $inputValue = date('Y-m-d H:i:s');
-    if ($estado == "Habilitar") {
-        $inputValue = null;
-    } 
+    $habilitado = $usdeshabilitado == null || $usdeshabilitado == "0000-00-00 00:00:00" ? true : false;
+    $tdEstado = $habilitado ? "Habilitado" : $usdeshabilitado;
     $todosLosUs .= "
     <tr data-id='".$unUsuario->get_idusuario()."' 
         data-usnombre='".$unUsuario->get_usnombre()."' 
@@ -21,8 +18,9 @@ foreach ($usuarios as $unUsuario) {
         <td>".$unUsuario->get_idusuario()."</td>
         <td>".$unUsuario->get_usnombre()."</td>
         <td>".$unUsuario->get_usmail()."</td>
-        <td class='estado'>".$usdeshabilitado."</td>
-        <td><input class='btn btn-primary botonEstado' type='button' data-usdeshabilitado='".$inputValue."' value='".$estado."'></td>
+        <td id='estado'>".$tdEstado."</td>
+        <td><input class='btn btn-success botonEstado' type='button' value='Habilitar' " . ($habilitado ? "disabled" : "") . ">  
+            <input class='btn btn-danger botonEstado' type='button' value='Deshabilitar' " . ($habilitado ? "" : "disabled") . "></td>
     </tr>";
 }
 ?>
@@ -46,20 +44,26 @@ foreach ($usuarios as $unUsuario) {
 </div>
 <script>
     $('.botonEstado').click(function() {
-    // Get the parent <tr> of the clicked button
+
     var $tr = $(this).closest('tr');
-    
-    // Retrieve all the data attributes from the <tr>
     var idusuario = $tr.data('id');
     var usnombre = $tr.data('usnombre');
     var usmail = $tr.data('usmail');
     var uspass = $tr.data('uspass');
     var usdeshabilitado = $(this).data('usdeshabilitado');
     
-    // Determine the action based on the button value
     var accion = $(this).val();
-    
-    // Create a data object to send via AJAX
+
+    var estado = $('#estado');
+    if (accion == "Habilitar") {
+        estado = "Habilitado";
+        usdeshabilitado = null;
+    } else {
+        var fechaActual = new Date();
+        var formatoFecha = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
+        estado = formatoFecha;
+        usdeshabilitado = formatoFecha;
+    }
     var datos = {
         idusuario: idusuario,
         usnombre: usnombre,
@@ -67,8 +71,8 @@ foreach ($usuarios as $unUsuario) {
         uspass: uspass,
         usdeshabilitado: usdeshabilitado
     };
-    
-    // Perform the AJAX request
+
+    //alert(JSON.stringify(datos));
     $.ajax({
         data: datos,
         type: 'POST',
@@ -77,9 +81,7 @@ foreach ($usuarios as $unUsuario) {
         success: function(data) {
             if (data.respuesta) {
                 alert('Usuario actualizado correctamente.');
-                // Update the button value based on the new state
-                //var newButtonValue = (accion === "Habilitar") ? "Deshabilitar" : "Habilitar";
-                //$(this).val(newButtonValue); // Update the button value
+                $('#estado').html(estado);
             } else {
                 alert('Error al actualizar el usuario.');
             }

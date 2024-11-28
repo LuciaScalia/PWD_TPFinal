@@ -10,10 +10,14 @@ $abmCompraEstadoTipo = new AbmCompraEstadoTipo();
 $usSession = $session->getUsuario();
 $rolSession = $session->getRol();
 $rolSession = $rolSession->get_idrol();
-$compras = $abmCompra->buscar(null);
+
+if ($rolSession == 3) {
+    $compras = $abmCompra->buscar(null);
+} else {
+    $compras = $abmCompra->buscar(['idusuario'=>$usSession->get_idusuario()]);
+}
 
 $mostrarCompras = "";
-
 foreach ($compras as $unaCompra) {
     $idCompraEstado = $abmCompraEstado->buscar(['idcompra'=>$unaCompra->get_idcompra()]);
     $cantFilas = count($idCompraEstado);

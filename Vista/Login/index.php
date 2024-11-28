@@ -1,5 +1,4 @@
 <?php
-$link = "";
 $titulo = "Login";
 include_once '../../Estructura/cabeceraBTNoSegura.php';
 $datos = data_submitted();

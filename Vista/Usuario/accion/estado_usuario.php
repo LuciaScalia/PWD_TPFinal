@@ -6,7 +6,13 @@ $datos = data_submitted();
 $respuesta = false;
 if(isset($datos['idusuario'])) {
     $ambUsuario = new AbmUsuario();
-    $respuesta = $ambUsuario->estadoUsuario($datos);
+    $session = new Session();
+    $rolSession = $session->getRol();
+    if ($rolSession->get_idrol() != 2) {
+        $respuesta = $ambUsuario->estadoUsuario($datos);
+    } else {
+        $respuesta = $ambUsuario->estadoUsuarioAdmin($datos);
+    }
     if (!$respuesta) {
         $mensaje = "La acci&oacute;n no pudo concretarse";
     }

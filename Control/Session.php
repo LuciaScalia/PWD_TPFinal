@@ -96,10 +96,11 @@ class Session{
                     $resp = $this->iniciar($datos['usnombre'],$uspass);
                     $usuario = $this->getUsuario();
                         if($resp) {
-                            if ($usuario->get_usdeshabilitado() == null) {
+                            $usdeshabilitado = $usuario->get_usdeshabilitado();
+                            if ($usdeshabilitado == null || $usdeshabilitado == "0000-00-00 00:00:00") {
                                 $usuariorol=$this->getRol();
                                 if(!empty($usuariorol)){  
-                                     //$idrol=$usuariorol->get_idrol();
+                                    //$idrol=$usuariorol->get_idrol();
                                     $li= ' <li class="nav-item">
                                     <a class="nav-link" href="../menu/menu_listar.php">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g></svg>    
@@ -112,18 +113,18 @@ class Session{
                                     $mensaje ="Error, vuelva a intentarlo";
                                     echo("<script>location.href = './index.php?msg=".$mensaje."';</script>");
                                 }
-                                } else {
-                                    $this->cerrar();
-                                    $mensaje ="El usuario fue eliminado";
-                                    echo("<script>location.href = './index.php?msg=".$mensaje."';</script>");
-                                }
                             } else {
-                                $mensaje ="Error, vuelva a intentarlo";
+                                $this->cerrar();
+                                $mensaje ="El usuario fue eliminado";
                                 echo("<script>location.href = './index.php?msg=".$mensaje."';</script>");
                             }
+                        } else {
+                            $mensaje ="Error, vuelva a intentarlo";
+                            echo("<script>location.href = './index.php?msg=".$mensaje."';</script>");
+                        }
                                 
                     } else {
-                        
+ 
                     }
             }
             
@@ -131,7 +132,7 @@ class Session{
             
                 $resp = $this->cerrar();
                 if($resp) {
-                    $mensaje ="Sesión Cerrada";
+                    $mensaje ="Sesión cerrada";
                     echo("<script>location.href = './index.php?msg=".$mensaje."';</script>");
                 }
             }

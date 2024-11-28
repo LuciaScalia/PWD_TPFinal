@@ -73,7 +73,6 @@ if($resp) {
                             Salir
                         </a>
                     </li>
-                    
                     <?php 
                  //   print_r($datos);
                     if(isset($datos) && isset($datos['li']) && $datos['li']!=null) {
