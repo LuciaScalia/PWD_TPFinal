@@ -105,7 +105,7 @@ $(document).ready(function() {
     $('.close').on('click',function(){
         $(this).closest('.modal').css('display','none');
     });
-    
+
     $('#formPago').on('submit',function(event){
         event.preventDefault();
         var productosConCantidad=productos.map(producto=>{

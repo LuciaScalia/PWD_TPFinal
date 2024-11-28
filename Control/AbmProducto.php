@@ -115,18 +115,20 @@ private function cargarObjeto($param){
     public function mostrarProductos(){
         $resp=false;
         $productos = $this->buscar(null);
-
+      
         if (!empty($productos)) {
             foreach ($productos as $unProducto) {
                 if($unProducto->get_procantstock()>0){
-                echo "<div class='producto'>
+                 
+                echo "
+                            
+                    <div class='producto'>
                         <img src='../".$unProducto->get_prodetalle()."'alt='".$unProducto->get_pronombre()."'class='imagen-producto'>
 
                         <div class='detalles-producto'>
                             <span id='producto-".$unProducto->get_idproducto()."'>".$unProducto->get_pronombre()."</span><br>
                             <span>$ ".$unProducto->get_proprecio()."</span>
-                            <input class='btn btn-primary btn-block agregar-producto ' data-id='".$unProducto->get_idproducto()."'data-nombre='".$unProducto->get_pronombre()."' data-imagen='../".$unProducto->get_prodetalle()."' data-precio='".$unProducto->get_proprecio()."' data-stock='".$unProducto->get_procantstock()."' type='button' value='Agregar'>
-                            
+                            <input class='btn btn-primary btn-block agregar-producto ' data-id='".$unProducto->get_idproducto()."'data-nombre='".$unProducto->get_pronombre()."' data-imagen='../".$unProducto->get_prodetalle()."' data-precio='".$unProducto->get_proprecio()."' data-stock='".$unProducto->get_procantstock()."' type='button' value='Agregar'>  
                         </div>
                     </div>";   
                 }
@@ -136,4 +138,39 @@ private function cargarObjeto($param){
         }
         return $resp;
     }
+
+    
+    public function mostrarProductosIndex(){
+        $resp=false;
+        $productos = $this->buscar(null);
+        $sesion=new Session();
+        $valido=$sesion->validar();
+        if (!empty($productos)) {
+            echo "
+                        <div id='contenedor'>
+                            <div id='productos'>";
+            foreach ($productos as $unProducto) {
+                if($unProducto->get_procantstock()>0){
+                 
+                
+                        echo " 
+                            <div class='producto'>
+                                <img src='../".$unProducto->get_prodetalle()."'alt='".$unProducto->get_pronombre()."'class='imagen-producto'>
+
+                                <div class='detalles-producto'>
+                                    <span id='producto-".$unProducto->get_idproducto()."'>".$unProducto->get_pronombre()."</span><br>
+                                    <span>$ ".$unProducto->get_proprecio()."</span>
+                                    <input class='btn btn-primary btn-block agregar-producto ' data-id='".$unProducto->get_idproducto()."'data-nombre='".$unProducto->get_pronombre()."' data-imagen='../".$unProducto->get_prodetalle()."' data-precio='".$unProducto->get_proprecio()."' data-stock='".$unProducto->get_procantstock()."' type='button' value='Agregar' onclick='".($valido ? "" : "redireccionarALogin()")."'>  
+                                </div>
+                            </div>";   
+                }
+                
+            }
+            echo "</div>
+            </div>";
+            $resp=true;
+        }
+        return $resp;
+    }
 }
+
