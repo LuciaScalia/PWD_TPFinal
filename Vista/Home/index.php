@@ -38,13 +38,13 @@ if($sesion->validar()){
                 <h2 class="text-center">Proceso de pago</h2>
                 <form id="formPago"  class="d-flex flex-column align-items-center">
                     <label for="nombre">Nombre titular: </label>
-                    <input type="text" id="nombre" name="tarjeta" required>
+                    <input type="text" class="form-control" id="nombre" name="tarjeta" required>
                     <label for="tarjeta">Número de tarjeta: </label>
-                    <input type="text" id="tarjeta" name="tarjeta" required>
+                    <input type="text" placeholder="0000 0000 0000 0000" class="form-control" id="tarjeta" name="tarjeta" required>
                     <label for="expiracion">Fecha expiración: </label>
-                    <input type="text" id="expiracion" name="expiracion" required>
+                    <input type="text"  placeholder="2024-12-22" class="form-control" id="expiracion" name="expiracion" required>
                     <label for="cvv">CVV: </label>
-                    <input type="text" id="cvv" name="cvv" required>
+                    <input type="text"  placeholder="000" class="form-control" id="cvv" name="cvv" required>
                     <div> <strong>Total a Pagar:</strong> 
                     <span id="totalPago">$0.00</span></div>
                     <input type="submit" class="btn btn-primary btn-block value="Pagar">

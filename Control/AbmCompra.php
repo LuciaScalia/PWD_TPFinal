@@ -227,7 +227,7 @@ class AbmCompra {
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>2,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
-                        $correo="Su compra fue confirmada!";
+                        $correo="¡Su compra fue confirmada!";
                         $this->EnviarCorreo($correo);
                         $abmCompraItem=new AbmCompraItem();
                         $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
@@ -263,7 +263,7 @@ class AbmCompra {
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>3,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
-                        $correo="Su compra fue enviada!";
+                        $correo="¡Su compra fue enviada!";
                         $this->EnviarCorreo($correo);
                     }
                 }
@@ -284,7 +284,7 @@ class AbmCompra {
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>5,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
-                        $correo="Su compra fue cancelada!";
+                        $correo="¡Su compra fue cancelada!";
                         $this->EnviarCorreo($correo);
                         $abmCompraItem=new AbmCompraItem();
                         $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
@@ -320,7 +320,7 @@ class AbmCompra {
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>4,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual() ];
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
-                        $correo="Su compra fue enviada!";
+                        $correo="¡Su compra llegó!";
                         $this->EnviarCorreo($correo);
                     }
                 }

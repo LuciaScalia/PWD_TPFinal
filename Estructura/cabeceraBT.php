@@ -35,7 +35,7 @@ if($resp) {
 <body>
 <header>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Cabecera segura</a>
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">TecnoProductos</a>
         <?php 
         $rol=new AbmUsuarioRol();
         $resp=$rol->permisoRol();
@@ -45,7 +45,7 @@ if($resp) {
         if($resp && $currentFile=='index.php' && $currentPath=='Home'){
 
             echo '<div id="carrito" class="ml-auto">
-                <input type="button" value="Carrito" id="toggleCarrito">
+                <input type="button" value="Carrito" id="toggleCarrito" class="btn btn-info">
                 <span id="cantProd"></span>
                 </div> 
                 <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">

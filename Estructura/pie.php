@@ -3,8 +3,8 @@
 </div>
 
 <footer class="footer mt-auto py-3 bg-dark ">
-    <div class="container">
-        <p> pie </p>
+    <div class="container text-center" >
+        <p style="color:#FFFFFF;"> GRUPO 23 - Carrasco Nadia (4236) y Scalia Lucia (4235)</p>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
