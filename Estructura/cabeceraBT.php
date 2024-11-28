@@ -40,7 +40,9 @@ if($resp) {
         $rol=new AbmUsuarioRol();
         $resp=$rol->permisoRol();
         
-        if($resp){
+        $currentFile= basename($_SERVER['PHP_SELF']);
+        $currentPath= basename(dirname($_SERVER['PHP_SELF'])); 
+        if($resp && $currentFile=='index.php' && $currentPath=='Home'){
 
             echo '<div id="carrito" class="ml-auto">
                 <input type="button" value="Carrito" id="toggleCarrito">

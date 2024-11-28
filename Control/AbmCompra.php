@@ -228,7 +228,7 @@ class AbmCompra {
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
                         $correo="Su compra fue confirmada!";
-                        //$this->EnviarCorreo($correo);
+                        $this->EnviarCorreo($correo);
                         $abmCompraItem=new AbmCompraItem();
                         $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
                        foreach($compraItem as $item){
@@ -264,7 +264,7 @@ class AbmCompra {
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
                         $correo="Su compra fue enviada!";
-                        //$this->EnviarCorreo($correo);
+                        $this->EnviarCorreo($correo);
                     }
                 }
                 break;
@@ -285,7 +285,7 @@ class AbmCompra {
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
                         $correo="Su compra fue cancelada!";
-                        //$this->EnviarCorreo($correo);
+                        $this->EnviarCorreo($correo);
                         $abmCompraItem=new AbmCompraItem();
                         $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
                             foreach($compraItem as $item){
@@ -321,7 +321,7 @@ class AbmCompra {
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
                         $correo="Su compra fue enviada!";
-                        //$this->EnviarCorreo($correo);
+                        $this->EnviarCorreo($correo);
                     }
                 }
                 break;

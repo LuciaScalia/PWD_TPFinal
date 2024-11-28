@@ -9,14 +9,16 @@ if($sesion->validar()){
 }
 ?>
 <link rel="stylesheet" href="../css/productosycarrito.css" >
-<div id="contenedor">
-    <div id="productos"></div>
-</div>
 <?php 
  $rol=new AbmUsuarioRol();
  $resp=$rol->permisoRol();
  if($resp){
-    echo  '<div id="miModal" class="modal">
+    echo  '
+            <div id="contenedor">
+                <div id="productos"></div>
+            </div>
+    
+        <div id="miModal" class="modal">
             <div class="modal-contenido">
                 <span class="close">&times;</span>
                 <h2>Mi Carrito</h2>
@@ -47,9 +49,12 @@ if($sesion->validar()){
                 </form>
             </div>
         </div>';
+        echo '<script src="../js/carrito.js"></script>';
+ }else{
+    $ambProducto=new AbmProducto();
+    $ambProducto->mostrarProductosIndex();
  }
 ?>
-<script src="../js/carrito.js"></script>
 
 
 
