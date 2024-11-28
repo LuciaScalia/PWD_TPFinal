@@ -36,48 +36,91 @@ $menuOperacion .= "</tr>";
     <table class="table col-md-7" >
         <?php echo $menuOperacion; ?>
     </table>
-</div>
-<!-- Button trigger modal -->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Editar
-</button>
-<!-- Modal -->
-<!--<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Editar usuario</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div name="formEditarUs" id="formEditarUs" class="col-md-7" style="display: none;">
+      <br>
+      <div>
+          <div id="mensaje"></div>
+          <h3>Editar usuario</h3><br>
       </div>
-      <div class="modal-body">
-        <label class="form-label text-muted" for="usnombremodal">Usuario</label>
-        <input type="text" name="usnombremodal" id="usnombremodal" class="form-control" required>
-        <label class="form-label text-muted" for="usmailmodal">Mail</label>
-        <input type="email" name="usmailmodal" id="usmailmodal" class="form-control" required>
-        <label class="form-label text-muted" for="uspassmodal">Contraseña</label>
-        <input type="password" name="uspassmodal" id="uspassmodal" class="form-control" required>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Aceptar</button>
-      </div>
+      <div>
+          <form name="formUsuario" id="formUsuario" method="post">
+              <label class="form-label text-muted" for="usnombrenuevo">Usuario</label>
+              <input type="text" name="usnombrenuevo" id="usnombrenuevo" class="form-control" data-usnombre="<?php echo $us->get_usnombre() ?>" placeholder="Nuevo nombre" required><br>
+              <!---->
+              <label class="form-label text-muted" for="usmailnuevo">Mail</label>
+              <input type="email" name="usmailnuevo" id="usmailnuevo" class="form-control" data-usmail="<?php echo $us->get_usmail() ?>" placeholder="Nuevo mail" required><br>
+              <!---->
+              <label class="form-label text-muted" for="uspassnueva">Contraseña</label>
+              <input type="password" name="uspassnueva" id="uspassnueva" class="form-control" data-uspass="<?php echo $us->get_uspass() ?>" placeholder="Nueva contraseña" required><br><br>
+              <div class="d-flex justify-content-center">
+              <input id="aceptar" type="button" class="btn btn-primary btn-block" value="Aceptar">
+              </div>
+              <br>
+          </form>
     </div>
-  </div>
-</div>-->
+</div>
+</div>
+
+<script src="../js/encriptar.js"></script>
 <script>
-  $('#Listarcompras').click(function() {
+    $('#Editarusuario').click(function() {
+        $('#formEditarUs').toggle();//muestra y esconde el div
+        $('#aceptar').click(function(evento) {
+          evento.preventDefault();
+          var idusuario = $('#idusuario').html();
+          var usdeshabilitado = null;
+
+          var usnombreactual = $('#usnombrenuevo').data('usnombre');
+          var usmailactual = $('#usmailnuevo').data('usmail');
+          var uspassactual = $('#uspassnueva').data('uspass');
+
+          var usnombrenuevo = $('#usnombrenuevo').val();
+          var usmailnuevo = $('#usmailnuevo').val();
+          var uspassnueva = $('#uspassnueva').val();
+
+          var usnombre = usnombrenuevo != "" ? usnombrenuevo : usnombreactual;
+          var usmail = usmailnuevo != "" ? usmailnuevo : usmailactual;
+          var uspass;
+          if (uspassnueva != "") {
+            uspass = uspassnueva;
+            var uspass =  document.getElementById("uspassnueva").value;
+            var uspass = CryptoJS.MD5(uspass).toString()
+            document.getElementById("uspassnueva").value = uspass;
+          } else {
+            uspass = uspassactual;
+          }
+
+          var datos = {
+                idusuario: idusuario,
+                usnombre: usnombre,
+                usmail: usmail,
+                uspass: uspass,
+                usdeshabilitado: usdeshabilitado
+              };
+
+          alert(JSON.stringify(datos));
+          $.ajax({
+            data: datos,
+            type: 'POST',
+            dataType: 'json',
+            url: '../Usuario/accion/editar_usuario.php',
+            success: function(data) {
+                if (data.respuesta) {
+                  $('#mensale').html("El usuario se actualizó con éxito");
+                } else {
+                    $('#menu').html('<div><p>' + data.errorMsg + '</p></div>');
+                }
+              },
+            });
+        });
+    });
+
+    $('#Listarcompras').click(function() {
         window.location.href = '../Compra/listar_compras.php';
     });
 
     $('#Listarusuarios').click(function() {
         window.location.href = '../Rol/listar_usuarios.php';
-    });
-
-    $('#Editarusuario').click(function() {
-        var usnombre = $('#usnombre').val();
-        $('#usnombremodal').val(usnombre);
     });
     
     $('#Gestionarroles').click(function() {
@@ -104,7 +147,7 @@ $menuOperacion .= "</tr>";
                 if (data.respuesta) {
                   $('#menu').empty();
                   alert("La cuenta se eliminó con éxito");
-                  window.location.href = '../Login/index.php';
+                  window.location.href = '../Home/index.php';
                 } else {
                     $('#menu').html('<div><p>' + data.errorMsg + '</p></div>');
                 }

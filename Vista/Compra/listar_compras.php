@@ -8,6 +8,8 @@ $abmCompraEstado = new AbmCompraEstado();
 $abmCompraEstadoTipo = new AbmCompraEstadoTipo();
 
 $usSession = $session->getUsuario();
+$rolSession = $session->getRol();
+$rolSession = $rolSession->get_idrol();
 $compras = $abmCompra->buscar(null);
 
 $mostrarCompras = "";
@@ -61,13 +63,7 @@ foreach ($compras as $unaCompra) {
                     <input disabled type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
     
                 ";
-            } elseif ($estado == 4) {
-                $botones = "
-                    <input disabled type='button' value='Recibida' class='btn btn-success recibida-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-                    <input disabled type='button' value='Cancelar' class='btn btn-danger cancelar-btn' data-idcompra='".$unaCompra->get_idcompra()."' data-cefechafin='".$idCompraEstado->get_cefechafin()."' data-idcompraestadotipo='".$idCompraEstadoTipo."' data-idcompraestado='".$idCompraEstado->get_idcompraestado()."'>
-    
-                ";
-            } 
+            }
         }
         
         
@@ -76,7 +72,7 @@ foreach ($compras as $unaCompra) {
     }
 }
 ?>
-<div class='d-flex justify-content-center'><h2>Datos de las compras</h2></div>
+<div><h3>Compras</h3></div>
 <div id="mensaje"></div>
 <div>
     <table class="table table-striped table-sm">

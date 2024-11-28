@@ -84,9 +84,11 @@ class AbmUsuario {
      */
     public function modificacion($param){
         $resp = false;
-        if ($this->seteadosCamposClaves($param)){/********************************************************** ACÁ*/
+        if ($this->seteadosCamposClaves($param)){
             $elObjtUsuario = $this->cargarObjeto($param);
+            //print_r($elObjtUsuario);
             if($elObjtUsuario!=null && $elObjtUsuario->modificar()){
+
                 $resp = true;
             }
         }
@@ -142,6 +144,10 @@ class AbmUsuario {
             }
         }
         $resp = $this->modificacion($param);
+        if ($resp) {
+            $session = new Session();
+            $resp = $session->cerrar();
+        }
         return $resp;
     }
 }
