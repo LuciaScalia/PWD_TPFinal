@@ -9,6 +9,8 @@ if($sesion->validar()){
 }
 ?>
 <link rel="stylesheet" href="../css/productosycarrito.css" >
+
+<div  class="justify-content-center text-center"><h2>Nuestros productos</h2>
 <?php 
  $rol=new AbmUsuarioRol();
  $resp=$rol->permisoRol();
@@ -56,7 +58,7 @@ if($sesion->validar()){
  }
 ?>
 
-
+</div>
 
 <?php
 include_once("../../Estructura/pie.php");

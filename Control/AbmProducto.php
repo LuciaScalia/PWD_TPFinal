@@ -122,7 +122,7 @@ private function cargarObjeto($param){
                  
                 echo "
                             
-                    <div class='producto'>
+                    <div class='producto' style='margin:20px;'>
                         <img src='../".$unProducto->get_prodetalle()."'alt='".$unProducto->get_pronombre()."'class='imagen-producto'>
 
                         <div class='detalles-producto'>
