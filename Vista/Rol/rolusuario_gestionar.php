@@ -4,11 +4,18 @@ include_once("../../Estructura/CabeceraBT.php");
 
 $abmUsuario = new AbmUsuario();
 $abmUsuarioRol = new AbmUsuarioRol();
-$abmRol = new AbmRol(); // no mostrar administradores
-$usuarios = $abmUsuario->buscar(null);
+$abmRol = new AbmRol();
+$session = new Session();
+$usrol = $session->getRol();
+$usidrol = $usrol->get_idrol();
 
-$usActivos = "";
-foreach ($usuarios as $unUsuario) {
+$pag = "gestionarroles";
+$resp = $abmUsuarioRol->permisosPagina($usidrol, $pag);
+$usActivos = "sinpermiso";
+if ($resp) {
+    $usuarios = $abmUsuario->buscar(null);
+    $usActivos = "";
+    foreach ($usuarios as $unUsuario) {
     $estado = $unUsuario->get_usdeshabilitado();
     if ($estado == null) {
         $idRol = "sinrol";
@@ -39,9 +46,9 @@ foreach ($usuarios as $unUsuario) {
         </tr>";
     }
 }
-?> 
 
-<div>
+if ($usActivos != "sinpermiso") {
+    echo '<div>
     <b>Usuarios habilitados</b>
     <div id="mensaje"></div>
     <table class="table table-striped table-sm">
@@ -53,11 +60,14 @@ foreach ($usuarios as $unUsuario) {
                 <th>Gestionar</th>
             </tr>
         </thead>
-        <?php
-            echo $usActivos;
-        ?>
-    </table>
-</div>
+        '.$usActivos.'
+        </table>
+    </div>';
+}
+} else {
+    echo("<script>location.href = '../Home/index.php'</script>");
+}
+?> 
 
 <script>
     $(document).ready(function() {

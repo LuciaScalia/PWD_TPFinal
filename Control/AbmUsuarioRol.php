@@ -151,4 +151,15 @@ class AbmUsuarioRol {
         }
         return $resp;
     }
+
+    public function permisosPagina($idrol, $pag) {
+        $session = new Session();
+        $resp = false;
+        if (($pag == "gestionarroles" || $pag == "listarusuarios") && $idrol == 2) {
+            $resp = true;
+        } elseif ($pag == "listarcompras" && ($idrol == 1 || $idrol == 3)) {
+            $resp = true;
+        }
+        return $resp;
+    }
 }

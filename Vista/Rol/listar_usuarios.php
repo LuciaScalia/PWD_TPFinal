@@ -3,9 +3,18 @@ $titulo = "Lista de usuarios";
 include_once("../../Estructura/cabeceraBT.php");
 
 $abmUsuario = new AbmUsuario();
-$usuarios = $abmUsuario->buscar(null);
-$todosLosUs = "";
-foreach ($usuarios as $unUsuario) {
+$abmUsuarioRol = new AbmUsuarioRol();
+$session = new Session();
+$usrol = $session->getRol();
+$usidrol = $usrol->get_idrol();
+
+$pag = "listarusuarios";
+$resp = $abmUsuarioRol->permisosPagina($usidrol, $pag);
+
+if ($resp) {
+    $usuarios = $abmUsuario->buscar(null);
+    $todosLosUs = "";
+    foreach ($usuarios as $unUsuario) {
     $usdeshabilitado = $unUsuario->get_usdeshabilitado();
     $habilitado = $usdeshabilitado == null || $usdeshabilitado == "0000-00-00 00:00:00" ? true : false;
     $tdEstado = $habilitado ? "Habilitado" : $usdeshabilitado;
@@ -23,25 +32,27 @@ foreach ($usuarios as $unUsuario) {
             <input class='btn btn-danger botonEstado' type='button' value='Deshabilitar' " . ($habilitado ? "" : "disabled") . "></td>
     </tr>";
 }
+
+echo '<div>
+        <b>Usuarios</b>
+        <table class="table table-striped table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Mail</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+                '.$todosLosUs.'
+        </table>
+    </div>';
+} else {
+    echo("<script>location.href = '../Home/index.php'</script>");
+}
 ?>
 
-<div>
-    <b>Usuarios</b>
-    <table class="table table-striped table-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Mail</th>
-                <th>Estado</th>
-                <th></th>
-            </tr>
-        </thead>
-        <?php
-            echo $todosLosUs;
-        ?>
-    </table>
-</div>
 <script>
     $('.botonEstado').click(function() {
 
