@@ -1,24 +1,24 @@
 <?php
 include_once '../../Estructura/cabeceraBTNoSegura.php';
-$datos = data_submitted();
+//$datos = data_submitted();
 ?>
 
-<div id="contenedor" class="container d-flex justify-content-center">
-    <div class="col-md-5">
+<div id="contenedor">
+    <div class="col-md-10">
         <br>
-        <div class="d-flex justify-content-center">
-            <h3>Nuevo usuario</h3>
+        <div>
+            <h3>Registrarse</h3><br>
         </div>
         <div>
             <form name="formUsuario" id="formUsuario" method="post">
                 <label class="form-label text-muted" for="usnombre">Usuario</label>
-                <input type="text" name="usnombre" id="usnombre" class="form-control" required><br>
+                <input type="text" name="usnombre" id="usnombre" class="form-control" placeholder="Usuario" required><br>
                 <!---->
                 <label class="form-label text-muted" for="usmail">Mail</label>
-                <input type="email" name="usmail" id="usmail" class="form-control" required><br>
+                <input type="email" name="usmail" id="usmail" class="form-control" placeholder="Mail" required><br>
                 <!---->
                 <label class="form-label text-muted" for="uspass">Contraseña</label>
-                <input type="password" name="uspass" id="uspass" class="form-control" required><br><br>
+                <input type="password" name="uspass" id="uspass" class="form-control" placeholder="Contraseña" required><br><br>
 
                 <div class="d-flex justify-content-center">
                 <input id="aceptar" type="button" class="btn btn-primary btn-block" value="Aceptar">

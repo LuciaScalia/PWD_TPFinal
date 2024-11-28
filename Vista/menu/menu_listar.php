@@ -15,32 +15,34 @@ $menuOperacion = "<tr>";
 foreach($menurol as $unmenu) {
     $unmenu = $unmenu->get_objmenu();
     $id = str_replace(' ', '', $unmenu->getMenombre());
-    $menuOperacion .= '<input class="btn btn-primary" type="button" name="'.$id.'" id="'.$id.'"value="'.$unmenu->getMenombre().'">';
+    $menuOperacion .= '<td><input class="btn btn-primary" type="button" name="'.$id.'" id="'.$id.'"value="'.$unmenu->getMenombre().'"></td>';
 }
+$menuOperacion .= "</tr>";
 ?>
 <!--<a href='".$unmenu->getMedescripcion().-->
-<form name="us" id="us" style="display: none;">
-    <input type="hidden" name="idusuario" id="idusuario" value="<?php echo $us->get_idusuario() ?>">
-    <input type="hidden" name="usnombre" id="usnombre" value="<?php echo $us->get_usnombre() ?>">
-    <input type="hidden" name="usmail" id="usmail" value="<?php echo $us->get_usmail() ?>">
-    <input type="hidden" name="uspass" id="uspass" value="<?php echo $us->get_uspass() ?>">
-    <input type="hidden" name="usdeshabilitado" id="usdeshabilitado" value="<?php echo $us->get_usdeshabilitado() ?>">
-</form>
+<table class="table col-md-7">
+  <th>Usuario</th>
+  <th>Mail</th>
+  <tr>
+    <td name="usnombre" id="usnombre"><?php echo $us->get_usnombre() ?></td>
+    <td name="usmail" id="usmail"><?php echo $us->get_usmail() ?></td>
+    <td style="display: none;" name="idusuario" id="idusuario"><?php echo $us->get_idusuario() ?></td>
+    <td style="display: none;" name="uspass" id="uspass"><?php echo $us->get_uspass() ?></td>
+    <td style="display: none;" name="usdeshabilitado" id="usdeshabilitado"><?php echo $us->get_usdeshabilitado() ?></td>
+  </tr>
+<table>
 <div id="menu">
     <b>Permisos de <?php echo $usrolnombre; ?></b><br>
-    <table>
-        <form>
-            <?php echo $menuOperacion; ?>
-            </tr>
-        </form>
+    <table class="table col-md-7" >
+        <?php echo $menuOperacion; ?>
     </table>
 </div>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   Editar
 </button>
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!--<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -52,10 +54,8 @@ foreach($menurol as $unmenu) {
       <div class="modal-body">
         <label class="form-label text-muted" for="usnombremodal">Usuario</label>
         <input type="text" name="usnombremodal" id="usnombremodal" class="form-control" required>
-        <!---->
         <label class="form-label text-muted" for="usmailmodal">Mail</label>
         <input type="email" name="usmailmodal" id="usmailmodal" class="form-control" required>
-        <!---->
         <label class="form-label text-muted" for="uspassmodal">Contraseña</label>
         <input type="password" name="uspassmodal" id="uspassmodal" class="form-control" required>
       </div>
@@ -65,7 +65,7 @@ foreach($menurol as $unmenu) {
       </div>
     </div>
   </div>
-</div>
+</div>-->
 <script>
   $('#Listarcompras').click(function() {
         window.location.href = '../Compra/listar_compras.php';
@@ -88,24 +88,23 @@ foreach($menurol as $unmenu) {
         var fechaActual = new Date();
         var formatoFecha = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
         var datos = {
-        idusuario: $('#idusuario').val(),
-        usnombre: $('#usnombre').val(),
-        usmail: $('#usmail').val(),
-        uspass: $('#uspass').val(),
-        usdeshabilitado: formatoFecha
+        idusuario: $('#idusuario').html(),
+        usnombre: $('#usnombre').html(),
+        usmail: $('#usmail').html(),
+        uspass: $('#uspass').html(),
+        usdeshabilitado : formatoFecha
         };
+        //alert(JSON.stringify(datos));
         $.ajax({
             data: datos,
             type: 'POST',
             dataType: 'json',
-            url: '../Usuario/accion/eliminar_usuario.php',
+            url: '../Usuario/accion/estado_usuario.php',
             success: function(data) {
-                $('#menu').empty();
                 if (data.respuesta) {
-                   $('#menu').html('<div><p>Usuario eliminado correctamente</p></div><input type="button" name="finalizar" id="finalizar" value="Aceptar">');
-                    $('#finalizar').click(function() {
-                        window.location.href = '../Login/index.php';
-                    });
+                  $('#menu').empty();
+                  alert("La cuenta se eliminó con éxito");
+                  window.location.href = '../Login/index.php';
                 } else {
                     $('#menu').html('<div><p>' + data.errorMsg + '</p></div>');
                 }

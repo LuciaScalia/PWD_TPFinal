@@ -204,8 +204,7 @@ class AbmCompra {
         }
         return [ 'mensaje'=> $mensaje ];
     }
-  
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function actualizarCompra($datosCompra){
         $idcompra = (int)$datosCompra['idcompra']; 
         $cefechafin = $datosCompra['cefechafin']; 
@@ -214,13 +213,13 @@ class AbmCompra {
         $accion= $datosCompra['accion'];
         $mensaje=false;
         $compraestado=new AbmCompraEstado();
-        $compra=$compraestado->buscar(['idcompra'=>$idcompra]);  
+        $compra=$compraestado->buscar(['idcompra'=>$idcompra]);
+
         switch($accion){
             case 'confirmar':
-                //var_dump($compra);
                $param=['idcompraestado'=>$idcompraestado,
                'idcompra'=>$idcompra,
-               'idcompraestadotipo'=>$idcompraestadotipo,
+               'idcompraestadotipo'=>1,
                'cefechaini'=>$compra[0]->get_cefechaini(),
                'cefechafin'=>$this->fechaActual()];
                $mensaje=$compraestado->modificacion($param);
@@ -229,17 +228,14 @@ class AbmCompra {
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
                         $correo="Su compra fue confirmada!";
-                        $this->EnviarCorreo($correo);
+                        //$this->EnviarCorreo($correo);
                         $abmCompraItem=new AbmCompraItem();
                         $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
-                       // print_r($compraItem);
                        foreach($compraItem as $item){
                             $idproducto= $item->get_idproducto();
                             $cicantidad= $item->get_cicantidad();
-                            
                             $abmProducto=new AbmProducto();
                             $producto=$abmProducto->buscar(['idproducto'=>$idproducto]);
-                            //print_r($producto);
                             if(!empty($producto)){
                                 $cant=$producto[0]->get_procantstock();
                                 $param=['idproducto'=>$idproducto,
@@ -251,68 +247,52 @@ class AbmCompra {
                             }
                         }
                     }
-
                 }
                 break;
             case 'enviar':
                 $compraestados = $compraestado->buscar(['idcompra'=>(int)$datosCompra['idcompra']]);
                 $cantcompraestados = count($compraestados);
                 $compraestados = $compraestados[$cantcompraestados - 1];
-
                 $param=['idcompraestado'=>$compraestados->get_idcompraestado(), //esto hay q cambiar
                'idcompra'=>$idcompra,
-               'idcompraestadotipo'=>$idcompraestadotipo,
+               'idcompraestadotipo'=>2,
                'cefechaini'=>$compra[0]->get_cefechaini(),
                'cefechafin'=>$this->fechaActual()];
-              //var_dump($paramfecha);
                $mensaje=$compraestado->modificacion($param);
                if($mensaje){
                     $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>3,'cefechaini'=>$this->fechaActual(),'cefechafin'=>null];
                     $mensaje=$compraestado->alta($param);
                     if($mensaje){
                         $correo="Su compra fue enviada!";
-                        $this->EnviarCorreo($correo);
-                       
+                        //$this->EnviarCorreo($correo);
                     }
                 }
-
-                /*$param=['idcompraestado'=>$idcompraestado,
-               'idcompra'=>$idcompra,
-               'idcompraestadotipo'=>$idcompraestadotipo,
-               'cefechaini'=>$compra[0]->get_cefechaini(),
-               'cefechafin'=>$this->fechaActual()];
-              //var_dump($paramfecha);
-               $mensaje=$compraestado->modificacion($param);
-               if($mensaje){
-                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>3,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
-                    $mensaje=$compraestado->alta($param);
-                }*/
-               
                 break;
-
             case 'cancelar':
-                $param=['idcompraestado'=>$idcompraestado,
-                   'idcompra'=>$idcompra,
-                   'idcompraestadotipo'=>$idcompraestadotipo,
+                //ver
+                foreach($compra as $unaCompraEstado) {
+                    $cefechafin = $unaCompraEstado->get_cefechafin() == null || $unaCompraEstado->get_cefechafin() == "0000-00-00 00:00:00" ? $this->fechaActual() : $unaCompraEstado->get_cefechafin();
+                    $param=['idcompraestado'=>$idcompraestado,
+                   'idcompra'=>$unaCompraEstado->get_idcompra(),
+                   'idcompraestadotipo'=>$unaCompraEstado->get_idcompraestadotipo(),
                    'cefechaini'=>$compra[0]->get_cefechaini(),
-                   'cefechafin'=>$this->fechaActual()];
+                   'cefechafin'=>$cefechafin];
                    $mensaje=$compraestado->modificacion($param);
-                   if($mensaje){
-                        $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>5,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
-                        $mensaje=$compraestado->alta($param);
-                        if($mensaje){
-                            $correo="Su compra fue cancelada!";
-                            $this->EnviarCorreo($correo);
-                            $abmCompraItem=new AbmCompraItem();
-                            $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
-                           // print_r($compraItem);
-                           foreach($compraItem as $item){
+                }
+                
+                if($mensaje){
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>5,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual()];
+                    $mensaje=$compraestado->alta($param);
+                    if($mensaje){
+                        $correo="Su compra fue cancelada!";
+                        //$this->EnviarCorreo($correo);
+                        $abmCompraItem=new AbmCompraItem();
+                        $compraItem=$abmCompraItem->buscar(['idcompra'=>$idcompra]);
+                            foreach($compraItem as $item){
                                 $idproducto= $item->get_idproducto();
                                 $cicantidad= $item->get_cicantidad();
-                                
                                 $abmProducto=new AbmProducto();
                                 $producto=$abmProducto->buscar(['idproducto'=>$idproducto]);
-                                //print_r($producto);
                                 if(!empty($producto)){
                                     $cant=$producto[0]->get_procantstock();
                                     $param=['idproducto'=>$idproducto,
@@ -324,12 +304,29 @@ class AbmCompra {
                                 }
                             }
                         }
+                }
+                 break;
+            case 'recibida':
+                $compraestados = $compraestado->buscar(['idcompra'=>(int)$datosCompra['idcompra']]);
+                $cantcompraestados = count($compraestados);
+                $compraestados = $compraestados[$cantcompraestados - 1];
+                $param=['idcompraestado'=>$compraestados->get_idcompraestado(), //esto hay q cambiar
+               'idcompra'=>$idcompra,
+               'idcompraestadotipo'=>3,
+               'cefechaini'=>$compra[0]->get_cefechaini(),
+               'cefechafin'=>$this->fechaActual()];
+               $mensaje=$compraestado->modificacion($param);
+               if($mensaje){
+                    $param=['idcompra'=>$idcompra,'idcompraestadotipo'=>4,'cefechaini'=>$this->fechaActual(),'cefechafin'=>$this->fechaActual() ];
+                    $mensaje=$compraestado->alta($param);
+                    if($mensaje){
+                        $correo="Su compra fue enviada!";
+                        //$this->EnviarCorreo($correo);
                     }
-                    break;
-        }
-
+                }
+                break;
+            }
         return [ 'mensaje'=> $mensaje ];
     }
-
 }
 ?>

@@ -101,7 +101,7 @@ class CompraEstado extends BaseDatos{
         $resp = false;
         $db=new BaseDatos();
         $sql = "UPDATE compraestado SET `idcompra` = '".$this->get_idcompra()."', `idcompraestadotipo` = '".$this->get_idcompraestadotipo()."', `cefechaini` = '".$this->get_cefechaini()."', `cefechafin` = '".$this->get_cefechafin()."'
-        WHERE `idcompra` = '".$this->get_idcompra()."'";
+        WHERE `idcompraestado` = '".$this->get_idcompraestado()."'";
         if ($db->Iniciar()) {
             if ($db->Ejecutar($sql)) {
                 $resp = true;

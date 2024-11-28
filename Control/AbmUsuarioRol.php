@@ -117,29 +117,6 @@ class AbmUsuarioRol {
         return $arreglo; 
     }
 
-    /*public function gestionarRol($datos) {
-        //$datos = idusuario e idrol a cambiar
-        $ambUsuarioRol = new abmUsuarioRol();
-        $ambUsuario = new AbmUsuario();
-        $ambRol = new AbmRol();
-        $respuesta = false;
-        //print_r($datos);
-        $us = $ambUsuario->buscar(['idusuario'=>$datos['idusuario']]);
-        $usrol = $ambUsuarioRol->buscar(['idusuario'=>$datos['idusuario']]);
-        //print_r($usrol);
-        $nuevorol = $ambRol->buscar(['idrol'=>$datos['idrol']]); //rol que llega en $datos
-        $param = [$us, $nuevorol];//sirve para alta
-        if (empty($usrol)) {
-            $respuesta = $ambUsuarioRol->alta($param);
-        } else {
-            $usrol = [$us, $nuevorol];
-            $respuesta = $ambUsuarioRol->baja($usrol);
-            print_r($usrol);
-            $respuesta = $ambUsuarioRol->alta($param);
-        }
-        return $respuesta;
-    }*/
-
     public function gestionarRol($datos) {
         $ambUsuarioRol = new abmUsuarioRol();
         $ambUsuario = new AbmUsuario();
@@ -161,6 +138,7 @@ class AbmUsuarioRol {
         }
         return $respuesta;
     }
+    
     public function permisoRol(){
         $sesion= new Session();
         $resp=false;  
